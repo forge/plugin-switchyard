@@ -26,7 +26,6 @@ import java.io.File;
 
 import junit.framework.Assert;
 
-import org.eclipse.core.runtime.Path;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.forge.test.AbstractShellTest;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -61,12 +60,7 @@ public class ForgeClojureTest extends GenericTestForge {
     
     private static final String CLOJURE_SUCCESS_MSG5 = "Created Clojure implementation " + CLOJURE_SERVICE5;
     
-    private static final String FOO_CONFIG_FILE = "src" 
-        + Path.SEPARATOR 
-        + "main" 
-        + Path.SEPARATOR 
-        + "resources" 
-        + Path.SEPARATOR + "foo_config.txt";
+    private static final String FOO_CONFIG_FILE = "src/main/resources/foo_config.txt"; 
 
     /**
      * The deployment method is where references to classes, packages, and

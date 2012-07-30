@@ -5,13 +5,12 @@
    <artifactId>switchyard-forge-plugin</artifactId>
    <version>1.0.0-SNAPSHOT</version>
    <properties>
-      <forge.api.version>1.0.5.Final</forge.api.version>
+      <forge.version>1.0.5.Final</forge.version>
       <switchyard.version>0.5.0.Final</switchyard.version>
    </properties>
 
    <dependencyManagement>
       <dependencies>
-
          <dependency>
             <groupId>org.jboss.spec</groupId>
             <artifactId>jboss-javaee-6.0</artifactId>
@@ -22,34 +21,9 @@
          <dependency>
             <groupId>org.jboss.forge</groupId>
             <artifactId>forge-parent</artifactId>
-            <version>${forge.api.version}</version>
+            <version>${forge.version}</version>
             <type>pom</type>
             <scope>import</scope>
-         </dependency>
-         <dependency>
-            <groupId>org.switchyard</groupId>
-            <artifactId>switchyard-core-parent</artifactId>
-            <version>${switchyard.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
-         <dependency>
-            <groupId>org.jboss.forge</groupId>
-            <artifactId>forge-shell-api</artifactId>
-            <version>${forge.api.version}</version>
-            <scope>provided</scope>
-         </dependency>
-         <dependency>
-            <groupId>org.jboss.forge</groupId>
-            <artifactId>forge-test-harness</artifactId>
-            <version>${forge.api.version}</version>
-            <scope>test</scope>
-         </dependency>
-         <dependency>
-            <groupId>org.jboss.forge</groupId>
-            <artifactId>forge-shell</artifactId>
-            <version>${forge.api.version}</version>
-            <scope>test</scope>
          </dependency>
       </dependencies>
    </dependencyManagement>
@@ -79,19 +53,51 @@
          <groupId>org.jboss.forge</groupId>
          <artifactId>forge-test-harness</artifactId>
          <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <artifactId>weld-api</artifactId>
+               <groupId>org.jboss.weld</groupId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.jboss.forge</groupId>
          <artifactId>forge-shell</artifactId>
          <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <artifactId>weld-api</artifactId>
+               <groupId>org.jboss.weld</groupId>
+            </exclusion>
+            <exclusion>
+               <artifactId>weld-core</artifactId>
+               <groupId>org.jboss.weld</groupId>
+            </exclusion>
+            <exclusion>
+               <artifactId>weld-se-core</artifactId>
+               <groupId>org.jboss.weld.se</groupId>
+            </exclusion>
+            <exclusion>
+               <artifactId>weld-spi</artifactId>
+               <groupId>org.jboss.weld</groupId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.switchyard.components</groupId>
          <artifactId>switchyard-component-bean</artifactId>
+         <version>${switchyard.version}</version>
+         <exclusions>
+            <exclusion>
+               <artifactId>weld-se-core</artifactId>
+               <groupId>org.jboss.weld.se</groupId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.switchyard.components</groupId>
          <artifactId>switchyard-component-bpm</artifactId>
+         <version>${switchyard.version}</version>
          <exclusions>
             <exclusion>
                <groupId>org.eclipse.jdt.core.compiler</groupId>
@@ -102,6 +108,7 @@
       <dependency>
          <groupId>org.switchyard.components</groupId>
          <artifactId>switchyard-component-camel</artifactId>
+         <version>${switchyard.version}</version>
       </dependency>
       <dependency>
          <groupId>org.switchyard.components</groupId>
@@ -111,6 +118,7 @@
       <dependency>
          <groupId>org.switchyard.components</groupId>
          <artifactId>switchyard-component-rules</artifactId>
+         <version>${switchyard.version}</version>
          <exclusions>
             <exclusion>
                <groupId>org.eclipse.jdt.core.compiler</groupId>
@@ -121,11 +129,12 @@
       <dependency>
          <groupId>org.hamcrest</groupId>
          <artifactId>hamcrest-all</artifactId>
+         <version>1.1</version>
          <scope>test</scope>
       </dependency>
       <dependency>
-         <groupId>org.mockito</groupId>
-         <artifactId>mockito-all</artifactId>
+         <groupId>org.jboss.weld.se</groupId>
+         <artifactId>weld-se-core</artifactId>
          <scope>test</scope>
       </dependency>
    </dependencies>

@@ -60,6 +60,7 @@ public class ClojureModelBuilderTest {
         final FileWriter fileWriter = new FileWriter(scriptFile);
         fileWriter.write(script);
         fileWriter.flush();
+        fileWriter.close();
         
         final ClojureComponentImplementationModel implModel = new ClojureModelBuilder().inlineScript(scriptFile.getAbsolutePath()).build();
         assertThat(implModel.getScriptModel().getScript(), is(equalTo(script)));
