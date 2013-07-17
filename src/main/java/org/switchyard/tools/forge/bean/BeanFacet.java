@@ -21,51 +21,50 @@ package org.switchyard.tools.forge.bean;
 
 import java.io.File;
 
-import org.jboss.forge.project.facets.DependencyFacet;
-import org.jboss.forge.project.facets.PackagingFacet;
-import org.jboss.forge.project.packaging.PackagingType;
-import org.jboss.forge.resources.DirectoryResource;
-import org.jboss.forge.resources.FileResource;
-import org.jboss.forge.shell.plugins.Alias;
-import org.jboss.forge.shell.plugins.RequiresFacet;
-import org.jboss.forge.shell.plugins.RequiresPackagingType;
-import org.switchyard.tools.forge.AbstractFacet;
+import org.jboss.forge.addon.facets.constraints.RequiresFacet;
+import org.jboss.forge.addon.projects.facets.DependencyFacet;
+import org.jboss.forge.addon.projects.facets.PackagingFacet;
+import org.jboss.forge.addon.projects.facets.RequiresPackagingType;
+import org.jboss.forge.addon.resource.DirectoryResource;
+import org.jboss.forge.addon.resource.FileResource;
+import org.switchyard.tools.forge.AbstractSwitchyardFacet;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 
 /**
  * Forge facet for Bean services.
  */
-@Alias("switchyard.bean")
-@RequiresFacet({ DependencyFacet.class, PackagingFacet.class, SwitchYardFacet.class})
-@RequiresPackagingType(PackagingType.JAR)
-public class BeanFacet extends AbstractFacet {
-    
-    private static final String BEAN_MAVEN_ID = 
-        "org.switchyard.components:switchyard-component-bean";
+@RequiresFacet({ DependencyFacet.class, PackagingFacet.class, SwitchYardFacet.class })
+@RequiresPackagingType("JAR")
+public class BeanFacet extends AbstractSwitchyardFacet
+{
 
-    /**
-     * Create a new BeanFacet.
-     */
-    public BeanFacet() {
-        super(BEAN_MAVEN_ID);
-    }
-    
-    @Override
-    public boolean install() {
-        installDependencies();
-        createCDIDescriptor();
-        return true;
-    }
-    
-    private void createCDIDescriptor() {
-        DirectoryResource metaInf = project.getProjectRoot().getChildDirectory(
-                "src" 
-                + File.separator + "main" 
-                + File.separator + "resources"
-                + File.separator + "META-INF");
-        
+   private static final String BEAN_MAVEN_ID =
+            "org.switchyard.components:switchyard-component-bean";
 
-        FileResource<?> beansXml = (FileResource<?>) metaInf.getChild("beans.xml");
-        beansXml.setContents("");
-    }
+   /**
+    * Create a new BeanFacet.
+    */
+   public BeanFacet()
+   {
+      super(BEAN_MAVEN_ID);
+   }
+
+   @Override
+   public boolean install()
+   {
+      installDependencies();
+      createCDIDescriptor();
+      return true;
+   }
+
+   private void createCDIDescriptor()
+   {
+      DirectoryResource metaInf = getFaceted().getProjectRoot().getChildDirectory(
+               "src" + File.separator + "main"
+                        + File.separator + "resources"
+                        + File.separator + "META-INF");
+
+      FileResource<?> beansXml = (FileResource<?>) metaInf.getChild("beans.xml");
+      beansXml.setContents("");
+   }
 }

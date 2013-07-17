@@ -19,36 +19,35 @@
 
 package org.switchyard.tools.forge.rules;
 
-import org.jboss.forge.project.facets.DependencyFacet;
-import org.jboss.forge.project.facets.PackagingFacet;
-import org.jboss.forge.project.packaging.PackagingType;
-import org.jboss.forge.shell.plugins.Alias;
-import org.jboss.forge.shell.plugins.RequiresFacet;
-import org.jboss.forge.shell.plugins.RequiresPackagingType;
-import org.switchyard.tools.forge.AbstractFacet;
+import org.jboss.forge.addon.facets.constraints.RequiresFacet;
+import org.jboss.forge.addon.projects.facets.DependencyFacet;
+import org.jboss.forge.addon.projects.facets.PackagingFacet;
+import org.jboss.forge.addon.projects.facets.RequiresPackagingType;
+import org.switchyard.tools.forge.AbstractSwitchyardFacet;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 
 /**
  * Forge facet for Rules services.
  */
-@Alias("switchyard.rules")
-@RequiresFacet({ DependencyFacet.class, PackagingFacet.class, SwitchYardFacet.class})
-@RequiresPackagingType(PackagingType.JAR)
-public class RulesFacet extends AbstractFacet {
-    
-    private static final String RULES_MAVEN_ID = 
-        "org.switchyard.components:switchyard-component-rules";
+@RequiresFacet({ DependencyFacet.class, PackagingFacet.class, SwitchYardFacet.class })
+@RequiresPackagingType("jar")
+public class RulesFacet extends AbstractSwitchyardFacet
+{
 
-    /**
-     * Create a new BeanFacet.
-     */
-    public RulesFacet() {
-        super(RULES_MAVEN_ID);
-    }
-    
-    @Override
-    public boolean install() {
-        installDependencies();
-        return true;
-    }
+   private static final String RULES_MAVEN_ID = "org.switchyard.components:switchyard-component-rules";
+
+   /**
+    * Create a new BeanFacet.
+    */
+   public RulesFacet()
+   {
+      super(RULES_MAVEN_ID);
+   }
+
+   @Override
+   public boolean install()
+   {
+      installDependencies();
+      return true;
+   }
 }

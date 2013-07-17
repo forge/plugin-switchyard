@@ -21,19 +21,7 @@ package org.switchyard.tools.forge.camel;
 
 import java.net.URI;
 
-import javax.inject.Inject;
-
-import org.jboss.forge.project.Project;
-import org.jboss.forge.shell.ShellColor;
-import org.jboss.forge.shell.plugins.Alias;
-import org.jboss.forge.shell.plugins.Command;
-import org.jboss.forge.shell.plugins.Help;
-import org.jboss.forge.shell.plugins.Option;
-import org.jboss.forge.shell.plugins.PipeOut;
-import org.jboss.forge.shell.plugins.Plugin;
-import org.jboss.forge.shell.plugins.RequiresFacet;
-import org.jboss.forge.shell.plugins.RequiresProject;
-import org.jboss.forge.shell.plugins.Topic;
+import org.jboss.forge.addon.projects.Project;
 import org.switchyard.component.camel.config.model.v1.V1CamelBindingModel;
 import org.switchyard.component.camel.config.model.v1.V1OperationSelector;
 import org.switchyard.config.model.composite.CompositeReferenceModel;
@@ -43,95 +31,75 @@ import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 /**
  * Forge plugin for Camel binding commands.
  */
-@Alias("camel-binding")
-@RequiresProject
-@RequiresFacet({SwitchYardFacet.class, CamelFacet.class})
-@Topic("SOA")
-@Help("Provides commands to manage Camel service bindings in SwitchYard.")
-public class CamelBindingPlugin implements Plugin {
+public class CamelBindingPlugin
+{
 
-    @Inject
-    private Project _project;
-    
-    /**
-     * Bind a promoted service using the Camel binding.
-     * @param serviceName name of the service to bind
-     * @param configURI camel endpoint URI
-     * @param operationName target operation name for the SwitchYard service
-     * @param out shell output
-     */
-    @Command(value = "bind-service", help = "Add a Camel binding to a service.")
-    public void bindService(
-            @Option(required = true,
-                    name = "serviceName",
-                    description = "The service name") 
+   /**
+    * Bind a promoted service using the Camel binding.
+    * 
+    * @param serviceName name of the service to bind
+    * @param configURI camel endpoint URI
+    * @param operationName target operation name for the SwitchYard service
+    * @param out shell output
+    */
+   public void bindService(
+            Project project,
             final String serviceName,
-            @Option(required = true,
-                    name = "configURI",
-                    description = "The configuration URI") 
             final String configURI,
-            @Option(required = false,
-                    name = "operationName",
-                    description = "The operation name") 
-            final String operationName,
-            final PipeOut out) {
+            final String operationName
+            )
+   {
 
-        SwitchYardFacet switchYard = _project.getFacet(SwitchYardFacet.class);
-        CompositeServiceModel service = switchYard.getCompositeService(serviceName);
-        // Check to see if the service is public
-        if (service == null) {
-            out.println(out.renderColor(ShellColor.RED, "No public service named: " + serviceName));
-            return;
-        }
-        
-        V1CamelBindingModel binding = new V1CamelBindingModel();
-        binding.setConfigURI(URI.create(configURI));
-        
-        // Add an operation selector if an operation name has been specified
-        if (operationName != null) {
-            V1OperationSelector operation = new V1OperationSelector();
-            operation.setOperationName(operationName);
-            binding.setOperationSelector(operation);
-        }
-        
-        service.addBinding(binding);
-        switchYard.saveConfig();
-        out.println("Added binding.camel to service " + serviceName);
-    }
-    
+      SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+      CompositeServiceModel service = switchYard.getCompositeService(serviceName);
+      // Check to see if the service is public
+      if (service == null)
+      {
+         throw new IllegalArgumentException("No public service named: " + serviceName);
+      }
 
-    /**
-     * Bind a promoted reference using the Camel binding.
-     * @param referenceName name of the reference to bind
-     * @param configURI camel endpoint URI
-     * @param out shell output
-     */
-    @Command(value = "bind-reference", help = "Add a Camel binding to a reference.")
-    public void bindReference(
-            @Option(required = true,
-                    name = "referenceName",
-                    description = "The reference name") 
+      V1CamelBindingModel binding = new V1CamelBindingModel();
+      binding.setConfigURI(URI.create(configURI));
+
+      // Add an operation selector if an operation name has been specified
+      if (operationName != null)
+      {
+         V1OperationSelector operation = new V1OperationSelector();
+         operation.setOperationName(operationName);
+         binding.setOperationSelector(operation);
+      }
+
+      service.addBinding(binding);
+      switchYard.saveConfig();
+   }
+
+   /**
+    * Bind a promoted reference using the Camel binding.
+    * 
+    * @param referenceName name of the reference to bind
+    * @param configURI camel endpoint URI
+    * @param out shell output
+    */
+   public void bindReference(
+            Project project,
             final String referenceName,
-            @Option(required = true,
-                    name = "configURI",
-                    description = "The configuration URI") 
-            final String configURI,
-            final PipeOut out) {
+            final String configURI
+            )
+   {
 
-        SwitchYardFacet switchYard = _project.getFacet(SwitchYardFacet.class);
-        CompositeReferenceModel reference = switchYard.getCompositeReference(referenceName);
-        // Check to see if the reference is public
-        if (reference == null) {
-            out.println(out.renderColor(ShellColor.RED, "No public reference named: " + referenceName));
-            return;
-        }
-        
-        V1CamelBindingModel binding = new V1CamelBindingModel();
-        binding.setConfigURI(URI.create(configURI));
-        
-        reference.addBinding(binding);
-        switchYard.saveConfig();
-        out.println("Added binding.camel to reference " + referenceName);
-    }
-    
+      SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+      CompositeReferenceModel reference = switchYard.getCompositeReference(referenceName);
+      // Check to see if the reference is public
+      if (reference == null)
+      {
+         throw new IllegalArgumentException("No public reference named: " + referenceName);
+      }
+
+      V1CamelBindingModel binding = new V1CamelBindingModel();
+      binding.setConfigURI(URI.create(configURI));
+
+      reference.addBinding(binding);
+      switchYard.saveConfig();
+   }
+
 }

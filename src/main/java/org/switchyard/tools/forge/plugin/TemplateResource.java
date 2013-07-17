@@ -20,8 +20,8 @@ package org.switchyard.tools.forge.plugin;
 
 import java.io.File;
 
-import org.jboss.forge.project.facets.ResourceFacet;
-import org.jboss.forge.resources.FileResource;
+import org.jboss.forge.addon.projects.facets.ResourceFacet;
+import org.jboss.forge.addon.resource.FileResource;
 import org.switchyard.common.io.pull.StringPuller;
 import org.switchyard.common.type.Classes;
 

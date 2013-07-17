@@ -19,37 +19,37 @@
 
 package org.switchyard.tools.forge.clojure;
 
-import org.jboss.forge.project.facets.DependencyFacet;
-import org.jboss.forge.project.facets.PackagingFacet;
-import org.jboss.forge.project.packaging.PackagingType;
-import org.jboss.forge.shell.plugins.Alias;
-import org.jboss.forge.shell.plugins.RequiresFacet;
-import org.jboss.forge.shell.plugins.RequiresPackagingType;
-import org.switchyard.tools.forge.AbstractFacet;
+import org.jboss.forge.addon.facets.constraints.RequiresFacet;
+import org.jboss.forge.addon.projects.facets.DependencyFacet;
+import org.jboss.forge.addon.projects.facets.PackagingFacet;
+import org.jboss.forge.addon.projects.facets.RequiresPackagingType;
+import org.switchyard.tools.forge.AbstractSwitchyardFacet;
 
 /**
  * Forge facet for Clojure implementation.
  * 
  * @author Daniel Bevenius
  */
-@Alias("switchyard.clojure")
 @RequiresFacet({ DependencyFacet.class, PackagingFacet.class })
-@RequiresPackagingType(PackagingType.JAR)
-public class ClojureFacet extends AbstractFacet {
-    
-    private static final String CLOJURE_MAVEN_ID = "org.switchyard.components:switchyard-component-clojure";
-    
-    /**
-     * Create a new Camel Facet.
-     */
-    public ClojureFacet() {
-        super(CLOJURE_MAVEN_ID);
-    }
-    
-    @Override
-    public boolean install() {
-        installDependencies();
-        return true;
-    }
-    
+@RequiresPackagingType("jar")
+public class ClojureFacet extends AbstractSwitchyardFacet
+{
+
+   private static final String CLOJURE_MAVEN_ID = "org.switchyard.components:switchyard-component-clojure";
+
+   /**
+    * Create a new Camel Facet.
+    */
+   public ClojureFacet()
+   {
+      super(CLOJURE_MAVEN_ID);
+   }
+
+   @Override
+   public boolean install()
+   {
+      installDependencies();
+      return true;
+   }
+
 }
