@@ -21,12 +21,14 @@ package org.switchyard.tools.forge.bean;
 
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.ResourceFacet;
+import org.jboss.forge.furnace.services.Exported;
 import org.switchyard.tools.forge.plugin.TemplateResource;
 
 /**
  * Forge plugin for Bean component commands.
  */
-public class BeanServicePlugin
+@Exported
+public class BeanServiceConfigurator
 {
 
    // Template files used for bean services

@@ -25,6 +25,7 @@ import java.util.List;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.projects.facets.ResourceFacet;
+import org.jboss.forge.furnace.services.Exported;
 import org.switchyard.component.camel.config.model.v1.V1CamelImplementationModel;
 import org.switchyard.config.model.composite.v1.V1ComponentModel;
 import org.switchyard.config.model.composite.v1.V1ComponentServiceModel;
@@ -36,7 +37,8 @@ import org.switchyard.tools.forge.plugin.TemplateResource;
 /**
  * Commands related to Camel services.
  */
-public class CamelServicePlugin
+@Exported
+public class CamelServiceConfigurator
 {
 
    // Template files used for camel route services

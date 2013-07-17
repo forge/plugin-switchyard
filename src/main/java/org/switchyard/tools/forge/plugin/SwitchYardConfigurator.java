@@ -29,6 +29,7 @@ import org.jboss.forge.addon.parser.java.resources.JavaResource;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.projects.facets.ResourceFacet;
+import org.jboss.forge.furnace.services.Exported;
 import org.switchyard.config.model.composite.ComponentModel;
 import org.switchyard.config.model.composite.ComponentReferenceModel;
 import org.switchyard.config.model.composite.CompositeModel;
@@ -47,12 +48,13 @@ import org.switchyard.config.model.switchyard.ArtifactsModel;
 import org.switchyard.config.model.switchyard.SwitchYardModel;
 import org.switchyard.config.model.switchyard.v1.V1ArtifactModel;
 import org.switchyard.config.model.switchyard.v1.V1ArtifactsModel;
-import org.switchyard.tools.forge.camel.CamelServicePlugin.Type;
+import org.switchyard.tools.forge.camel.CamelServiceConfigurator.Type;
 
 /**
  * Project-level commands for SwitchYard applications.
  */
-public class SwitchYardPlugin
+@Exported
+public class SwitchYardConfigurator
 {
 
    // Directory where artifacts are stored
