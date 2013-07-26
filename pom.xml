@@ -14,7 +14,7 @@
 
    <properties>
       <switchyard.version>0.5.0.Final</switchyard.version>
-      <furnace.version>2.0.0.Alpha7</furnace.version>
+      <furnace.version>2.0.0-SNAPSHOT</furnace.version>
    </properties>
 
    <dependencies>
@@ -76,6 +76,10 @@
                <artifactId>weld-se-core</artifactId>
                <groupId>org.jboss.weld.se</groupId>
             </exclusion>
+            <exclusion>
+               <groupId>xerces</groupId>
+               <artifactId>xercesImpl</artifactId>
+            </exclusion>
          </exclusions>
       </dependency>
       <dependency>
@@ -91,17 +95,33 @@
                <artifactId>xml-apis</artifactId>
                <groupId>xml-apis</groupId>
             </exclusion>
+            <exclusion>
+               <groupId>xerces</groupId>
+               <artifactId>xercesImpl</artifactId>
+            </exclusion>
          </exclusions>
       </dependency>
       <dependency>
          <groupId>org.switchyard.components</groupId>
          <artifactId>switchyard-component-camel</artifactId>
          <version>${switchyard.version}</version>
+         <exclusions>
+            <exclusion>
+               <groupId>xerces</groupId>
+               <artifactId>xercesImpl</artifactId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.switchyard.components</groupId>
          <artifactId>switchyard-component-clojure</artifactId>
          <version>${switchyard.version}</version>
+         <exclusions>
+            <exclusion>
+               <groupId>xerces</groupId>
+               <artifactId>xercesImpl</artifactId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.switchyard.components</groupId>
@@ -111,6 +131,10 @@
             <exclusion>
                <artifactId>ecj</artifactId>
                <groupId>org.eclipse.jdt.core.compiler</groupId>
+            </exclusion>
+            <exclusion>
+               <groupId>xerces</groupId>
+               <artifactId>xercesImpl</artifactId>
             </exclusion>
          </exclusions>
       </dependency>
@@ -134,7 +158,6 @@
       <plugins>
          <plugin>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>2.3.2</version>
             <configuration>
                <source>1.6</source>
                <target>1.6</target>
