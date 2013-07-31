@@ -14,7 +14,7 @@
 
    <properties>
       <switchyard.version>0.5.0.Final</switchyard.version>
-      <furnace.version>2.0.0.Alpha8</furnace.version>
+      <furnace.version>2.0.0.Alpha9</furnace.version>
    </properties>
 
    <dependencies>
@@ -53,6 +53,8 @@
          <classifier>forge-addon</classifier>
          <scope>provided</scope>
       </dependency>
+      
+      <!-- Furnace Test Dependencies -->
       <dependency>
          <groupId>org.jboss.forge.furnace.test</groupId>
          <artifactId>furnace-test-harness</artifactId>
@@ -62,6 +64,12 @@
       <dependency>
          <groupId>org.jboss.forge.furnace.test</groupId>
          <artifactId>arquillian-furnace-classpath</artifactId>
+         <version>${furnace.version}</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.furnace</groupId>
+         <artifactId>furnace-se</artifactId>
          <version>${furnace.version}</version>
          <scope>test</scope>
       </dependency>
