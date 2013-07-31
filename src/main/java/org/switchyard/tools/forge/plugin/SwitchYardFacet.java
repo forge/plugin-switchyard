@@ -32,6 +32,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
@@ -44,6 +46,7 @@ import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
 import org.jboss.forge.addon.facets.constraints.RequiresFacet;
 import org.jboss.forge.addon.maven.projects.MavenFacet;
 import org.jboss.forge.addon.maven.projects.MavenPluginFacet;
+import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
@@ -73,6 +76,8 @@ import org.switchyard.tools.forge.AbstractSwitchyardFacet;
 public class SwitchYardFacet extends AbstractSwitchyardFacet
 {
    private static final Logger logger = Logger.getLogger(SwitchYardFacet.class.getName());
+   private static final Log LOG = LogFactory.getLog(SwitchYardFacet.class);
+
 
    // repository id of JBoss Nexus repository
    private static final String CONFIG_ATTR = "switchyard.config";
@@ -101,16 +106,29 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
    {
       super(DEPENDENCIES);
    }
+   
+//   @Override
+//   public void setFaceted(Project origin){
+//	   LOG.info("Called setFaceted");
+//	   super.setFaceted(origin);
+//	   this.install();
+//   }
 
    @Override
    public boolean install()
    {
+	   logger.info("In SwitchYardFacetInstall");
       // Doing this in a try/finally to set and unset the context class loader
       final ClassLoader orig = Classes.setTCCL(getClass().getClassLoader());
       try
       {
          // TOOD allow user to choose this
-         return performInstall(getFaceted().getFacet(MetadataFacet.class).getProjectName());
+         boolean rtnval= performInstall(getFaceted().getFacet(MetadataFacet.class).getProjectName());
+         logger.info("Intall returning " + rtnval);
+         return rtnval;
+      }catch(Exception ex){
+    	  ex.printStackTrace();
+    	  return false;
       }
       finally
       {
@@ -391,6 +409,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
 
    private boolean performInstall(String appName)
    {
+	   logger.info("Called PerformInstall");
       try
       {
          tweakForOpenShift();
@@ -430,6 +449,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
       }
       catch (Exception ex)
       {
+    	  ex.printStackTrace();
          return false;
       }
       return true;

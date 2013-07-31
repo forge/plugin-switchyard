@@ -25,6 +25,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.switchyard.config.model.composite.CompositeModel;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 
 @RunWith(Arquillian.class)
@@ -81,6 +82,11 @@ public class SwitchyardConfigurationTest
       Assert.assertFalse(project.hasFacet(SwitchYardFacet.class));
       SwitchYardFacet installed = facetFactory.install(project, SwitchYardFacet.class);
       Assert.assertNotNull(installed);
+      System.out.println("facetFactory implemented by" + facetFactory.getClass().getName());
       Assert.assertTrue(project.hasFacet(SwitchYardFacet.class));
+      Assert.assertNotNull(project.getFacet(SwitchYardFacet.class));
+      Assert.assertNotNull(installed.getMergedSwitchYardConfig().getComposite());
+
+      
    }
 }
