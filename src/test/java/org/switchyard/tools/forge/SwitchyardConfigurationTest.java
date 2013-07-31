@@ -33,10 +33,10 @@ public class SwitchyardConfigurationTest
 {
    @Deployment
    @Dependencies({
-            @AddonDependency(name = "org.jboss.forge.furnace:container-cdi", version = "2.0.0.Alpha7"),
+            @AddonDependency(name = "org.jboss.forge.furnace:container-cdi", version = "2.0.0.Alpha8"),
             @AddonDependency(name = "org.switchyard.forge:switchyard-forge-plugin", version = "1.0.0-SNAPSHOT"),
-            @AddonDependency(name = "org.jboss.forge.addon:projects", version = "2.0.0.Alpha7"),
-            @AddonDependency(name = "org.jboss.forge.addon:maven", version = "2.0.0.Alpha7")
+            @AddonDependency(name = "org.jboss.forge.addon:projects", version = "2.0.0.Alpha8"),
+            @AddonDependency(name = "org.jboss.forge.addon:maven", version = "2.0.0.Alpha8")
    })
    public static ForgeArchive getDeployment()
    {
