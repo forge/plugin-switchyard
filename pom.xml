@@ -107,6 +107,60 @@
          <version>${switchyard.version}</version>
          <exclusions>
             <exclusion>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+            </exclusion>
+            <exclusion>
+                 <groupId>org.jbpm</groupId>
+                 <artifactId>jbpm-audit</artifactId>
+            </exclusion>
+            <exclusion>
+                 <groupId>org.jbpm</groupId>
+                 <artifactId>jbpm-bpmn2</artifactId>
+            </exclusion>
+            <exclusion>
+                 <groupId>org.jbpm</groupId>
+                 <artifactId>jbpm-flow-builder</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>org.jbpm</groupId>
+                <artifactId>jbpm-form-services</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>org.jbpm</groupId>
+               <artifactId>jbpm-human-task-core</artifactId>
+            </exclusion>
+             <exclusion>
+                 <groupId>org.jbpm</groupId>
+                 <artifactId>jbpm-human-task-workitems</artifactId>
+             </exclusion>
+             <exclusion>
+                 <groupId>org.jbpm</groupId>
+                 <artifactId>jbpm-kie-services</artifactId>
+             </exclusion>
+             <exclusion>
+                 <groupId>org.jbpm</groupId>
+                 <artifactId>jbpm-persistence-jpa</artifactId>
+             </exclusion>
+             <exclusion>
+                 <groupId>org.jbpm</groupId>
+                 <artifactId>jbpm-runtime-manager</artifactId>
+             </exclusion>
+             <exclusion>
+                 <groupId>org.jbpm</groupId>
+                 <artifactId>jbpm-shared-services</artifactId>
+             </exclusion>
+             <exclusion>
+                 <groupId>org.jbpm</groupId>
+                 <artifactId>jbpm-workitems</artifactId>
+             </exclusion>
+             
+             
+             
+             
+             
+             
+            <exclusion>
                <artifactId>ecj</artifactId>
                <groupId>org.eclipse.jdt.core.compiler</groupId>
             </exclusion>
@@ -151,17 +205,6 @@
             </exclusion>
          </exclusions>
       </dependency>
-      <dependency>
-            <groupId>org.switchyard.components</groupId>
-            <artifactId>switchyard-component-bpm</artifactId>
-            <version>${switchyard.version}</version>      
-            <exclusions>
-                <exclusion>
-                    <groupId>org.eclipse.jdt.core.compiler</groupId>
-                    <artifactId>ecj</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
       <dependency>
          <groupId>org.switchyard.components</groupId>
          <artifactId>switchyard-component-rules</artifactId>
