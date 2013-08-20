@@ -19,8 +19,7 @@
 
 package org.switchyard.tools.forge.bpm;
 
-import static org.switchyard.component.bpm.task.work.SwitchYardServiceTaskHandler.SWITCHYARD_SERVICE;
-
+import static org.switchyard.component.bpm.config.model.BPMComponentImplementationModel.DEFAULT_NAMESPACE;
 import java.io.File;
 
 import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
@@ -31,13 +30,20 @@ import org.jboss.forge.furnace.services.Exported;
 import org.jboss.forge.parser.JavaParser;
 import org.jboss.forge.parser.java.JavaInterface;
 import org.switchyard.common.io.resource.SimpleResource;
+import org.switchyard.common.io.resource.ResourceType;
+import org.switchyard.component.bpm.BPMOperationType;
 import org.switchyard.component.bpm.config.model.v1.V1BPMComponentImplementationModel;
-import org.switchyard.component.bpm.config.model.v1.V1TaskHandlerModel;
-import org.switchyard.component.bpm.task.work.SwitchYardServiceTaskHandler;
+import org.switchyard.component.bpm.config.model.v1.V1BPMComponentImplementationModel;
+import org.switchyard.component.bpm.config.model.v1.V1BPMOperationModel;
+import org.switchyard.component.common.knowledge.config.model.OperationModel;
+import org.switchyard.component.common.knowledge.config.model.v1.V1ManifestModel;
+import org.switchyard.component.common.knowledge.config.model.v1.V1OperationsModel;
 import org.switchyard.config.model.composite.InterfaceModel;
 import org.switchyard.config.model.composite.v1.V1ComponentModel;
 import org.switchyard.config.model.composite.v1.V1ComponentServiceModel;
 import org.switchyard.config.model.composite.v1.V1InterfaceModel;
+import org.switchyard.config.model.resource.v1.V1ResourceModel;
+import org.switchyard.config.model.resource.v1.V1ResourcesModel;
 import org.switchyard.config.model.switchyard.SwitchYardModel;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 import org.switchyard.tools.forge.plugin.TemplateResource;
@@ -164,21 +170,18 @@ public class BPMServiceConfigurator
 
       // Create the BPM implementation model and add it to the component model
       V1BPMComponentImplementationModel bpm = new V1BPMComponentImplementationModel();
-      bpm.setProcessDefinition(new SimpleResource(processDefinition));
       bpm.setProcessId(processId);
       bpm.setPersistent(persistent);
-      if (sessionId != null && sessionId.intValue() > -1)
-      {
-         bpm.setSessionId(sessionId);
-      }
-      bpm.setMessageContentInName(messageContentInName);
-      bpm.setMessageContentOutName(messageContentOutName);
-      bpm.setAgent(agent);
-      V1TaskHandlerModel switchyardHandler = new V1TaskHandlerModel();
-      switchyardHandler.setName(SWITCHYARD_SERVICE);
-      switchyardHandler.setClazz(SwitchYardServiceTaskHandler.class);
-      bpm.addTaskHandler(switchyardHandler);
-      component.setImplementation(bpm);
+
+      V1OperationsModel operations = new V1OperationsModel(DEFAULT_NAMESPACE);
+      OperationModel operation = (OperationModel)new V1BPMOperationModel().setType(BPMOperationType.START_PROCESS).setName("operation");
+      operations.addOperation(operation);
+      bpm.setOperations(operations);
+      V1ManifestModel manifest = new V1ManifestModel(DEFAULT_NAMESPACE);
+      V1ResourcesModel resources = new V1ResourcesModel(DEFAULT_NAMESPACE);
+      resources.addResource(new V1ResourceModel(DEFAULT_NAMESPACE).setLocation(processDefinition).setType(ResourceType.valueOf("BPMN2")));
+      manifest.setResources(resources);
+      bpm.setManifest(manifest);
 
       // Add the new component service to the application config
       SwitchYardModel syConfig = switchYard.getSwitchYardConfig();

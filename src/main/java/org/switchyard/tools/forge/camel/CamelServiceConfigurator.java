@@ -19,13 +19,18 @@
 
 package org.switchyard.tools.forge.camel;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.ResourcesFacet;
 import org.jboss.forge.furnace.services.Exported;
-import org.switchyard.component.camel.config.model.v1.V1CamelImplementationModel;
+
+import org.switchyard.component.camel.model.v1.V1CamelImplementationModel;
 import org.switchyard.config.model.composite.v1.V1ComponentModel;
 import org.switchyard.config.model.composite.v1.V1ComponentServiceModel;
 import org.switchyard.config.model.composite.v1.V1InterfaceModel;
+
 import org.switchyard.config.model.switchyard.SwitchYardModel;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 import org.switchyard.tools.forge.plugin.TemplateResource;
@@ -47,21 +52,18 @@ public class CamelServiceConfigurator
 
    public enum Type
    {
-      WSDL("wsdl"), JAVA("java");
-
-      String type;
-
-      private Type(String type)
-      {
-         this.type = type;
-      }
-
-      public String getType()
-      {
-         return type;
-      }
+    WSDL("wsdl"), JAVA("java");
+         String type;
+         private Type(String type)
+         {
+            this.type = type;
+         }
+         public String getType()
+         {
+            return type;
+         }
    }
-
+   
    /**
     * @param routeName route name
     * @param wsdlPath WSDL path (ex. wsdl/MyService.wsdl)
@@ -71,17 +73,18 @@ public class CamelServiceConfigurator
    public void createXMLRoute(Project project, String routeName, Type type, String wsdlPath, String wsdlPort,
             String interfaceClass) throws java.io.IOException
    {
-      // Gather interface details
-      String intfValue;
-      if (Type.WSDL.equals(type))
-      {
-         intfValue = wsdlPath + "#wsdl.porttype(" + wsdlPort + ")";
-      }
-      else
-      {
-         intfValue = interfaceClass;
-      }
+       List<String> typeList = Arrays.asList(new String[] {"wsdl", "java"});
+       String intfValue;
+       if (Type.WSDL.equals(type))
+       {
+           intfValue = wsdlPath + "#wsdl.porttype(" + wsdlPort + ")";
+       }
+       else
+       {
+           intfValue = interfaceClass;
+       }
 
+       
       // Create the component service model
       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
       V1ComponentModel component = new V1ComponentModel();
