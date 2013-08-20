@@ -28,7 +28,7 @@ import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
 import org.jboss.forge.addon.parser.java.resources.JavaResource;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
-import org.jboss.forge.addon.projects.facets.ResourceFacet;
+import org.jboss.forge.addon.projects.facets.ResourcesFacet;
 import org.jboss.forge.furnace.services.Exported;
 import org.switchyard.config.model.composite.ComponentModel;
 import org.switchyard.config.model.composite.ComponentReferenceModel;
@@ -158,7 +158,7 @@ public class SwitchYardConfigurator
 
       TemplateResource template = new TemplateResource(TEST_SERVICE_TEMPLATE);
       template.serviceName(serviceName);
-      String testFile = template.writeJavaSource(project.getFacet(ResourceFacet.class),
+      String testFile = template.writeJavaSource(project.getFacet(ResourcesFacet.class),
                pkgName, serviceName + "Test", true);
       return project.getFacet(JavaSourceFacet.class).getTestJavaResource(testFile);
    }

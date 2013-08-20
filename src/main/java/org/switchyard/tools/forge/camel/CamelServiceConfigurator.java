@@ -19,12 +19,8 @@
 
 package org.switchyard.tools.forge.camel;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.jboss.forge.addon.projects.Project;
-import org.jboss.forge.addon.projects.facets.MetadataFacet;
-import org.jboss.forge.addon.projects.facets.ResourceFacet;
+import org.jboss.forge.addon.projects.facets.ResourcesFacet;
 import org.jboss.forge.furnace.services.Exported;
 import org.switchyard.component.camel.config.model.v1.V1CamelImplementationModel;
 import org.switchyard.config.model.composite.v1.V1ComponentModel;
@@ -72,7 +68,8 @@ public class CamelServiceConfigurator
     * @param wsdlPort WSDL portType (ex. MyService);
     * @param interfaceClass the fully qualified java interface class (only required if Type is JAVA)
     */
-   public void createXMLRoute(Project project, String routeName, Type type, String wsdlPath, String wsdlPort, String interfaceClass) throws java.io.IOException
+   public void createXMLRoute(Project project, String routeName, Type type, String wsdlPath, String wsdlPort,
+            String interfaceClass) throws java.io.IOException
    {
       // Gather interface details
       String intfValue;
@@ -101,7 +98,7 @@ public class CamelServiceConfigurator
       TemplateResource xmlRoute = new TemplateResource(ROUTE_XML_TEMPLATE);
       String routeFile = routeName + ".xml";
       xmlRoute.serviceName(routeName);
-      xmlRoute.writeResource(project.getFacet(ResourceFacet.class).getResource(routeFile));
+      xmlRoute.writeResource(project.getFacet(ResourcesFacet.class).getResource(routeFile));
       impl.setXMLPath(routeFile);
       component.setImplementation(impl);
 
@@ -123,11 +120,11 @@ public class CamelServiceConfigurator
       TemplateResource camelIntf = new TemplateResource(ROUTE_INTERFACE_TEMPLATE);
       camelIntf.serviceName(routeName);
       String interfaceFile = camelIntf.writeJavaSource(
-               project.getFacet(ResourceFacet.class), pkgName, routeName, false);
+               project.getFacet(ResourcesFacet.class), pkgName, routeName, false);
 
       TemplateResource camelImpl = new TemplateResource(ROUTE_IMPLEMENTATION_TEMPLATE);
       camelImpl.serviceName(routeName);
       String implementationFile = camelImpl.writeJavaSource(
-               project.getFacet(ResourceFacet.class), pkgName, routeName + "Builder", false);
+               project.getFacet(ResourcesFacet.class), pkgName, routeName + "Builder", false);
    }
 }

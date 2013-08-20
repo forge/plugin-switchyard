@@ -26,7 +26,7 @@ import java.io.File;
 import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
-import org.jboss.forge.addon.projects.facets.ResourceFacet;
+import org.jboss.forge.addon.projects.facets.ResourcesFacet;
 import org.jboss.forge.furnace.services.Exported;
 import org.jboss.forge.parser.JavaParser;
 import org.jboss.forge.parser.java.JavaInterface;
@@ -129,7 +129,7 @@ public class BPMServiceConfigurator
                   .replaceToken(VAR_MESSAGE_CONTENT_IN_NAME, argMessageContentInName)
                   .replaceToken(VAR_MESSAGE_CONTENT_OUT_NAME, argMessageContentOutName)
                   .packageName(pkgName);
-         template.writeResource(project.getFacet(ResourceFacet.class).getResource(processDefinitionPath));
+         template.writeResource(project.getFacet(ResourcesFacet.class).getResource(processDefinitionPath));
       }
 
       boolean agent = argAgent != null ? argAgent.booleanValue() : false;

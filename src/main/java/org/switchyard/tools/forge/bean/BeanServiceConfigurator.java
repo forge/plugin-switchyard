@@ -20,7 +20,7 @@
 package org.switchyard.tools.forge.bean;
 
 import org.jboss.forge.addon.projects.Project;
-import org.jboss.forge.addon.projects.facets.ResourceFacet;
+import org.jboss.forge.addon.projects.facets.ResourcesFacet;
 import org.jboss.forge.furnace.services.Exported;
 import org.switchyard.tools.forge.plugin.TemplateResource;
 
@@ -49,11 +49,11 @@ public class BeanServiceConfigurator
       TemplateResource beanIntf = new TemplateResource(BEAN_INTERFACE_TEMPLATE);
       beanIntf.serviceName(serviceName);
       String interfaceFile = beanIntf.writeJavaSource(
-               project.getFacet(ResourceFacet.class), pkgName, serviceName, false);
+               project.getFacet(ResourcesFacet.class), pkgName, serviceName, false);
 
       TemplateResource beanImpl = new TemplateResource(BEAN_IMPLEMENTATION_TEMPLATE);
       beanImpl.serviceName(serviceName);
       String implementationFile = beanImpl.writeJavaSource(
-               project.getFacet(ResourceFacet.class), pkgName, serviceName + "Bean", false);
+               project.getFacet(ResourcesFacet.class), pkgName, serviceName + "Bean", false);
    }
 }

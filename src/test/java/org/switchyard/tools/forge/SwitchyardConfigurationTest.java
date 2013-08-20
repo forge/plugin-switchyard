@@ -25,7 +25,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.switchyard.config.model.composite.CompositeModel;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 
 @RunWith(Arquillian.class)
@@ -33,19 +32,19 @@ public class SwitchyardConfigurationTest
 {
    @Deployment
    @Dependencies({
-            @AddonDependency(name = "org.jboss.forge.furnace:container-cdi", version = "2.0.0.Alpha8"),
+            @AddonDependency(name = "org.jboss.forge.furnace.container:cdi"),
             @AddonDependency(name = "org.switchyard.forge:switchyard-forge-plugin", version = "1.0.0-SNAPSHOT"),
-            @AddonDependency(name = "org.jboss.forge.addon:projects", version = "2.0.0.Alpha8"),
-            @AddonDependency(name = "org.jboss.forge.addon:maven", version = "2.0.0.Alpha8")
+            @AddonDependency(name = "org.jboss.forge.addon:projects"),
+            @AddonDependency(name = "org.jboss.forge.addon:maven")
    })
    public static ForgeArchive getDeployment()
    {
       return ShrinkWrap.create(ForgeArchive.class).
                addBeansXML().
                addAsAddonDependencies(
-                        AddonDependencyEntry.create("org.jboss.forge.addon:projects", "2.0.0.Alpha7"),
-                        AddonDependencyEntry.create("org.switchyard.forge:switchyard-forge-plugin", "1.0.0-SNAPSHOT"),
-                        AddonDependencyEntry.create("org.jboss.forge.furnace:container-cdi", "2.0.0.Alpha7")
+                        AddonDependencyEntry.create("org.jboss.forge.addon:projects"),
+                        AddonDependencyEntry.create("org.switchyard.forge:switchyard-forge-plugin"),
+                        AddonDependencyEntry.create("org.jboss.forge.furnace.container:cdi")
                );
    }
 
@@ -87,6 +86,5 @@ public class SwitchyardConfigurationTest
       Assert.assertNotNull(project.getFacet(SwitchYardFacet.class));
       Assert.assertNotNull(installed.getMergedSwitchYardConfig().getComposite());
 
-      
    }
 }

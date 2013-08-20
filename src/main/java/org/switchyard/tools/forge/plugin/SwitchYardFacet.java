@@ -46,7 +46,6 @@ import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
 import org.jboss.forge.addon.facets.constraints.RequiresFacet;
 import org.jboss.forge.addon.maven.projects.MavenFacet;
 import org.jboss.forge.addon.maven.projects.MavenPluginFacet;
-import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
@@ -78,7 +77,6 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
    private static final Logger logger = Logger.getLogger(SwitchYardFacet.class.getName());
    private static final Log LOG = LogFactory.getLog(SwitchYardFacet.class);
 
-
    // repository id of JBoss Nexus repository
    private static final String CONFIG_ATTR = "switchyard.config";
 
@@ -106,29 +104,31 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
    {
       super(DEPENDENCIES);
    }
-   
-//   @Override
-//   public void setFaceted(Project origin){
-//	   LOG.info("Called setFaceted");
-//	   super.setFaceted(origin);
-//	   this.install();
-//   }
+
+   // @Override
+   // public void setFaceted(Project origin){
+   // LOG.info("Called setFaceted");
+   // super.setFaceted(origin);
+   // this.install();
+   // }
 
    @Override
    public boolean install()
    {
-	   logger.info("In SwitchYardFacetInstall");
+      logger.info("In SwitchYardFacetInstall");
       // Doing this in a try/finally to set and unset the context class loader
       final ClassLoader orig = Classes.setTCCL(getClass().getClassLoader());
       try
       {
          // TOOD allow user to choose this
-         boolean rtnval= performInstall(getFaceted().getFacet(MetadataFacet.class).getProjectName());
+         boolean rtnval = performInstall(getFaceted().getFacet(MetadataFacet.class).getProjectName());
          logger.info("Intall returning " + rtnval);
          return rtnval;
-      }catch(Exception ex){
-    	  ex.printStackTrace();
-    	  return false;
+      }
+      catch (Exception ex)
+      {
+         ex.printStackTrace();
+         return false;
       }
       finally
       {
@@ -361,7 +361,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
     */
    private void addScannerPlugin(Model pom, Profile profile) throws Exception
    {
-      String version = getFaceted().getFacet(DependencyFacet.class).getProperty(VERSION);
+      String version = getFaceted().getFacet(MetadataFacet.class).getEffectiveProperty(VERSION);
       Dependency dep = DependencyBuilder.create(SWITCHYARD_PLUGIN + ":" + version);
       org.apache.maven.model.Plugin plugin = new org.apache.maven.model.Plugin();
 
@@ -409,7 +409,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
 
    private boolean performInstall(String appName)
    {
-	   logger.info("Called PerformInstall");
+      logger.info("Called PerformInstall");
       try
       {
          tweakForOpenShift();
@@ -449,7 +449,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
       }
       catch (Exception ex)
       {
-    	  ex.printStackTrace();
+         ex.printStackTrace();
          return false;
       }
       return true;

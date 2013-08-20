@@ -14,13 +14,14 @@
 
    <properties>
       <switchyard.version>0.5.0.Final</switchyard.version>
-      <furnace.version>2.0.0.Alpha9</furnace.version>
+      <furnace.version>2.0.0.Alpha10</furnace.version>
+      <forge.version>2.0.0.Alpha10</forge.version>
    </properties>
 
    <dependencies>
       <dependency>
-         <groupId>org.jboss.forge.furnace</groupId>
-         <artifactId>container-cdi</artifactId>
+         <groupId>org.jboss.forge.furnace.container</groupId>
+         <artifactId>cdi</artifactId>
          <classifier>forge-addon</classifier>
          <version>${furnace.version}</version>
          <scope>provided</scope>
@@ -28,28 +29,28 @@
       <dependency>
          <groupId>org.jboss.forge.addon</groupId>
          <artifactId>maven</artifactId>
-         <version>${furnace.version}</version>
+         <version>${forge.version}</version>
          <classifier>forge-addon</classifier>
          <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>org.jboss.forge.addon</groupId>
          <artifactId>parser-java</artifactId>
-         <version>${furnace.version}</version>
+         <version>${forge.version}</version>
          <classifier>forge-addon</classifier>
          <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>org.jboss.forge.addon</groupId>
          <artifactId>projects</artifactId>
-         <version>${furnace.version}</version>
+         <version>${forge.version}</version>
          <classifier>forge-addon</classifier>
          <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>org.jboss.forge.addon</groupId>
          <artifactId>ui</artifactId>
-         <version>${furnace.version}</version>
+         <version>${forge.version}</version>
          <classifier>forge-addon</classifier>
          <scope>provided</scope>
       </dependency>

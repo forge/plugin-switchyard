@@ -29,6 +29,7 @@ import org.jboss.forge.addon.facets.AbstractFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
+import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
 
 /**
@@ -89,7 +90,7 @@ public abstract class AbstractSwitchyardFacet extends AbstractFacet<Project> imp
     */
    public String getVersion()
    {
-      return getFaceted().getFacet(DependencyFacet.class).getProperty(VERSION);
+      return getFaceted().getFacet(MetadataFacet.class).getEffectiveProperty(VERSION);
    }
 
    /**
@@ -99,6 +100,6 @@ public abstract class AbstractSwitchyardFacet extends AbstractFacet<Project> imp
     */
    public void setVersion(String version)
    {
-      getFaceted().getFacet(DependencyFacet.class).setProperty(VERSION, version);
+      getFaceted().getFacet(MetadataFacet.class).setDirectProperty(VERSION, version);
    }
 }
