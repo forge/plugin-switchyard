@@ -13,7 +13,7 @@
    <version>1.0.0-SNAPSHOT</version>
 
    <properties>
-      <switchyard.version>0.5.0.Final</switchyard.version>
+      <switchyard.version>1.0.0.Final</switchyard.version>
       <furnace.version>2.0.0.Alpha10</furnace.version>
       <forge.version>2.0.0.Alpha10</forge.version>
    </properties>
@@ -77,6 +77,16 @@
 
       <!-- Switchyard Dependencies -->
       <dependency>
+          <groupId>org.switchyard</groupId>
+          <artifactId>switchyard-api</artifactId>
+          <version>${switchyard.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.switchyard</groupId>
+          <artifactId>switchyard-config</artifactId>
+          <version>${switchyard.version}</version>
+      </dependency>
+      <dependency>
          <groupId>org.switchyard.components</groupId>
          <artifactId>switchyard-component-bean</artifactId>
          <version>${switchyard.version}</version>
@@ -116,10 +126,19 @@
          <version>${switchyard.version}</version>
          <exclusions>
             <exclusion>
+               <groupId>org.jboss.web</groupId>
+               <artifactId>jasper-jdt</artifactId>
+            </exclusion>
+            <exclusion>
                <groupId>xerces</groupId>
                <artifactId>xercesImpl</artifactId>
             </exclusion>
          </exclusions>
+      </dependency>
+      <dependency>
+            <groupId>org.switchyard.components</groupId>
+            <artifactId>switchyard-component-camel-core</artifactId>
+            <version>${switchyard.version}</version>
       </dependency>
       <dependency>
          <groupId>org.switchyard.components</groupId>
@@ -133,6 +152,17 @@
          </exclusions>
       </dependency>
       <dependency>
+            <groupId>org.switchyard.components</groupId>
+            <artifactId>switchyard-component-bpm</artifactId>
+            <version>${switchyard.version}</version>      
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.jdt.core.compiler</groupId>
+                    <artifactId>ecj</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+      <dependency>
          <groupId>org.switchyard.components</groupId>
          <artifactId>switchyard-component-rules</artifactId>
          <version>${switchyard.version}</version>
@@ -145,7 +175,21 @@
                <groupId>xerces</groupId>
                <artifactId>xercesImpl</artifactId>
             </exclusion>
+            <exclusion>
+                    <groupId>org.eclipse.jdt.core.compiler</groupId>
+                    <artifactId>ecj</artifactId>
+            </exclusion>
          </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.switchyard</groupId>
+         <artifactId>switchyard-transform</artifactId>
+         <version>${switchyard.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.switchyard</groupId>
+         <artifactId>switchyard-validate</artifactId>
+         <version>${switchyard.version}</version>
       </dependency>
       <dependency>
          <groupId>org.hamcrest</groupId>

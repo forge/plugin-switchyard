@@ -23,8 +23,7 @@ import java.net.URI;
 
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.furnace.services.Exported;
-import org.switchyard.component.camel.config.model.v1.V1CamelBindingModel;
-import org.switchyard.component.camel.config.model.v1.V1OperationSelector;
+import org.switchyard.component.camel.core.model.v1.V1CamelBindingModel;
 import org.switchyard.config.model.composite.CompositeReferenceModel;
 import org.switchyard.config.model.composite.CompositeServiceModel;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
@@ -62,15 +61,6 @@ public class CamelBindingConfigurator
 
       V1CamelBindingModel binding = new V1CamelBindingModel();
       binding.setConfigURI(URI.create(configURI));
-
-      // Add an operation selector if an operation name has been specified
-      if (operationName != null)
-      {
-         V1OperationSelector operation = new V1OperationSelector();
-         operation.setOperationName(operationName);
-         binding.setOperationSelector(operation);
-      }
-
       service.addBinding(binding);
       switchYard.saveConfig();
    }
