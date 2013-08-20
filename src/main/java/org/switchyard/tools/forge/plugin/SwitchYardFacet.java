@@ -54,6 +54,7 @@ import org.jboss.forge.addon.resource.DirectoryResource;
 import org.jboss.forge.addon.resource.FileResource;
 import org.switchyard.common.type.Classes;
 import org.switchyard.common.version.Versions;
+import org.switchyard.config.OutputKey;
 import org.switchyard.config.model.ModelPuller;
 import org.switchyard.config.model.Models;
 import org.switchyard.config.model.composite.ComponentModel;
@@ -136,6 +137,19 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
       }
    }
 
+   @Override
+   public boolean isInstalled() {
+       // checking switchyard.xml existence and if the POM has dependency on switchyard-api 
+       if (super.isInstalled() && getSwitchYardConfigFile().exists()) {
+           if (getVersion() == null) {
+               // If it's switchyard project but POM doesn't have ${switchyard.version} property, add it.
+               setVersion(Versions.getSwitchYardVersion());
+           }
+           return true;
+       }
+       return false;
+    }
+   
    /**
     * Save the current SwitchYard configuration model.
     */
@@ -295,7 +309,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
       try
       {
          fos = new FileOutputStream(configFile.getUnderlyingResourceObject());
-         config.write(fos);
+         config.write(fos, OutputKey.PRETTY_PRINT);
       }
       catch (java.io.IOException ioEx)
       {
@@ -494,7 +508,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
       File backup = new File(asConfigPath + ".orig");
       if (backup.exists())
       {
-         throw new Exception("backup standalone.xml already exists " + backup.getAbsolutePath());
+          throw new Exception("backup standalone.xml already exists " + backup.getAbsolutePath());
       }
       if (!orig.renameTo(backup))
       {

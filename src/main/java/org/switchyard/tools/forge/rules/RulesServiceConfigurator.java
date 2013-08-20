@@ -19,6 +19,8 @@
 
 package org.switchyard.tools.forge.rules;
 
+import static org.switchyard.component.rules.config.model.RulesComponentImplementationModel.DEFAULT_NAMESPACE;
+
 import java.io.File;
 
 import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
@@ -28,15 +30,21 @@ import org.jboss.forge.addon.projects.facets.ResourcesFacet;
 import org.jboss.forge.furnace.services.Exported;
 import org.jboss.forge.parser.JavaParser;
 import org.jboss.forge.parser.java.JavaInterface;
-import org.switchyard.component.rules.RulesActionType;
-import org.switchyard.component.rules.config.model.RulesComponentImplementationModel;
-import org.switchyard.component.rules.config.model.v1.V1RulesActionModel;
+
+import org.switchyard.common.io.resource.ResourceType;
+import org.switchyard.component.common.knowledge.config.model.OperationModel;
+import org.switchyard.component.common.knowledge.config.model.v1.V1ManifestModel;
+import org.switchyard.component.common.knowledge.config.model.v1.V1OperationsModel;
+import org.switchyard.component.rules.RulesOperationType;
 import org.switchyard.component.rules.config.model.v1.V1RulesComponentImplementationModel;
+import org.switchyard.component.rules.config.model.v1.V1RulesOperationModel;
 import org.switchyard.config.model.composite.InterfaceModel;
 import org.switchyard.config.model.composite.v1.V1ComponentModel;
 import org.switchyard.config.model.composite.v1.V1ComponentServiceModel;
 import org.switchyard.config.model.composite.v1.V1InterfaceModel;
 import org.switchyard.config.model.resource.v1.V1ResourceModel;
+import org.switchyard.config.model.resource.v1.V1ResourcesModel;
+
 import org.switchyard.config.model.switchyard.SwitchYardModel;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 import org.switchyard.tools.forge.plugin.TemplateResource;
@@ -130,14 +138,17 @@ public class RulesServiceConfigurator
 
       // Create the Rules implementation model and add it to the component model
       V1RulesComponentImplementationModel rules = new V1RulesComponentImplementationModel();
-      rules.addResource(new V1ResourceModel(RulesComponentImplementationModel.DEFAULT_NAMESPACE)
-               .setLocation(rulesDefinition));
-      rules.addRulesAction(new V1RulesActionModel()
-               .setName("operation")
-               .setType(RulesActionType.EXECUTE));
-      rules.setAgent(agent);
+      V1OperationsModel operations = new V1OperationsModel(DEFAULT_NAMESPACE);
+      OperationModel operation = (OperationModel)new V1RulesOperationModel().setType(RulesOperationType.EXECUTE).setName("operation");
+      operations.addOperation(operation);
+      rules.setOperations(operations);
+      V1ManifestModel manifest = new V1ManifestModel(DEFAULT_NAMESPACE);
+      V1ResourcesModel resources = new V1ResourcesModel(DEFAULT_NAMESPACE);
+      resources.addResource(new V1ResourceModel(DEFAULT_NAMESPACE).setLocation(rulesDefinition).setType(ResourceType.valueOf("DRL")));
+      manifest.setResources(resources);
+      rules.setManifest(manifest);
       component.setImplementation(rules);
-
+      
       // Add the new component service to the application config
       SwitchYardModel syConfig = switchYard.getSwitchYardConfig();
       syConfig.getComposite().addComponent(component);
