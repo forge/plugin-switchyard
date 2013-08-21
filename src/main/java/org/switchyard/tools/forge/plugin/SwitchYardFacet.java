@@ -123,7 +123,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
       {
          // TOOD allow user to choose this
          boolean rtnval = performInstall(getFaceted().getFacet(MetadataFacet.class).getProjectName());
-         logger.info("Intall returning " + rtnval);
+         logger.info("Install returning " + rtnval);
          return rtnval;
       }
       catch (Exception ex)
@@ -497,7 +497,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
 
    // This method updates the config @ asConfigPath with required switchyard
    // subsystem details for OpenShift
-   void addSwitchYardToASConfig(String asConfigPath) throws Exception
+   public void addSwitchYardToASConfig(String asConfigPath) throws Exception
    {
       File orig = new File(asConfigPath);
       // create a backup
