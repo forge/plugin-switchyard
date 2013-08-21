@@ -26,6 +26,12 @@
          <classifier>forge-addon</classifier>
          <version>${furnace.version}</version>
          <scope>provided</scope>
+         <exclusions>
+            <exclusion>
+               <artifactId>el-api</artifactId>
+               <groupId>javax.el</groupId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.jboss.forge.addon</groupId>
@@ -33,6 +39,12 @@
          <version>${forge.version}</version>
          <classifier>forge-addon</classifier>
          <scope>provided</scope>
+         <exclusions>
+            <exclusion>
+               <artifactId>aopalliance</artifactId>
+               <groupId>aopalliance</groupId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.jboss.forge.addon</groupId>
@@ -99,6 +111,18 @@
             <exclusion>
                <groupId>xerces</groupId>
                <artifactId>xercesImpl</artifactId>
+            </exclusion>
+            <exclusion>
+               <artifactId>camel-core</artifactId>
+               <groupId>org.apache.camel</groupId>
+            </exclusion>
+            <exclusion>
+               <artifactId>camel-cdi</artifactId>
+               <groupId>org.apache.camel</groupId>
+            </exclusion>
+            <exclusion>
+               <artifactId>switchyard-common-cdi</artifactId>
+               <groupId>org.switchyard</groupId>
             </exclusion>
          </exclusions>
       </dependency>
@@ -171,6 +195,82 @@
                 <artifactId>kie-ci</artifactId>
                 <groupId>org.kie</groupId>
              </exclusion>
+             <exclusion>
+                <artifactId>switchyard-serial-jackson</artifactId>
+                <groupId>org.switchyard</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>kie-commons-validation</artifactId>
+                <groupId>org.kie.commons</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>kie-commons-data</artifactId>
+                <groupId>org.kie.commons</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>kie-api</artifactId>
+                <groupId>org.kie</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>kie-commons-io</artifactId>
+                <groupId>org.kie.commons</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>kie-nio2-fs</artifactId>
+                <groupId>org.kie.commons</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>kie-nio2-jgit</artifactId>
+                <groupId>org.kie.commons</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>kie-nio2-model</artifactId>
+                <groupId>org.kie.commons</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>kie-internal</artifactId>
+                <groupId>org.kie</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>kie-commons-regex</artifactId>
+                <groupId>org.kie.commons</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>kie-nio2-api</artifactId>
+                <groupId>org.kie.commons</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>kie-commons-cdi</artifactId>
+                <groupId>org.kie.commons</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>antlr</artifactId>
+                <groupId>antlr</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>antlr-runtime</artifactId>
+                <groupId>org.antlr</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>antlr</artifactId>
+                <groupId>org.antlr</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>dom4j</artifactId>
+                <groupId>dom4j</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>drools-core</artifactId>
+                <groupId>org.drools</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>drools-persistence-jpa</artifactId>
+                <groupId>org.drools</groupId>
+             </exclusion>
+             <exclusion>
+                <artifactId>drools-compiler</artifactId>
+                <groupId>org.drools</groupId>
+             </exclusion>
          </exclusions>
       </dependency>
       <dependency>
@@ -198,12 +298,26 @@
                <groupId>xerces</groupId>
                <artifactId>xercesImpl</artifactId>
             </exclusion>
+            <exclusion>
+               <artifactId>spring-tx</artifactId>
+               <groupId>org.springframework</groupId>
+            </exclusion>
+            <exclusion>
+               <artifactId>camel-spring</artifactId>
+               <groupId>org.apache.camel</groupId>
+            </exclusion>
          </exclusions>
       </dependency>
       <dependency>
          <groupId>org.switchyard.components</groupId>
          <artifactId>switchyard-component-camel-core</artifactId>
          <version>${switchyard.version}</version>
+         <exclusions>
+            <exclusion>
+               <artifactId>camel-core</artifactId>
+               <groupId>org.apache.camel</groupId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.switchyard.components</groupId>
@@ -316,11 +430,27 @@
          <groupId>org.switchyard</groupId>
          <artifactId>switchyard-transform</artifactId>
          <version>${switchyard.version}</version>
+         <exclusions>
+            <exclusion>
+               <artifactId>deltaspike-core-api</artifactId>
+               <groupId>org.apache.deltaspike.core</groupId>
+            </exclusion>
+            <exclusion>
+               <artifactId>switchyard-common-cdi</artifactId>
+               <groupId>org.switchyard</groupId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.switchyard</groupId>
          <artifactId>switchyard-validate</artifactId>
          <version>${switchyard.version}</version>
+         <exclusions>
+            <exclusion>
+               <artifactId>switchyard-common-cdi</artifactId>
+               <groupId>org.switchyard</groupId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.hamcrest</groupId>
