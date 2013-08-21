@@ -19,36 +19,34 @@
 
 package org.switchyard.tools.forge.camel;
 
-import org.jboss.forge.project.facets.DependencyFacet;
-import org.jboss.forge.project.facets.PackagingFacet;
-import org.jboss.forge.project.packaging.PackagingType;
-import org.jboss.forge.shell.plugins.Alias;
-import org.jboss.forge.shell.plugins.RequiresFacet;
-import org.jboss.forge.shell.plugins.RequiresPackagingType;
-import org.switchyard.tools.forge.AbstractFacet;
+import org.jboss.forge.addon.facets.constraints.RequiresFacet;
+import org.jboss.forge.addon.projects.facets.DependencyFacet;
+import org.jboss.forge.addon.projects.facets.PackagingFacet;
+import org.jboss.forge.addon.projects.facets.RequiresPackagingType;
+import org.switchyard.tools.forge.AbstractSwitchyardFacet;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 
 /**
  * Forge facet for Camel bindings and services.
  */
-@Alias("switchyard.camel")
 @RequiresFacet({ DependencyFacet.class, PackagingFacet.class, SwitchYardFacet.class })
-@RequiresPackagingType(PackagingType.JAR)
-public class CamelFacet extends AbstractFacet {
-    
-    private static final String CAMEL_MAVEN_ID = 
-        "org.switchyard.components:switchyard-component-camel";
-    
-    @Override
-    public boolean install() {
-        installDependencies();
-        return true;
-    }
-    
-    /**
-     * Create a new Camel Facet.
-     */
-    public CamelFacet() {
-        super(CAMEL_MAVEN_ID);
-    }
+@RequiresPackagingType("jar")
+public class CamelFacet extends AbstractSwitchyardFacet
+{
+   private static final String CAMEL_MAVEN_ID = "org.switchyard.components:switchyard-component-camel";
+
+   @Override
+   public boolean install()
+   {
+      installDependencies();
+      return true;
+   }
+
+   /**
+    * Create a new Camel Facet.
+    */
+   public CamelFacet()
+   {
+      super(CAMEL_MAVEN_ID);
+   }
 }

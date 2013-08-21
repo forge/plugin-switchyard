@@ -19,22 +19,19 @@
 
 package org.switchyard.tools.forge.bpm;
 
-import org.jboss.forge.project.facets.DependencyFacet;
-import org.jboss.forge.project.facets.PackagingFacet;
-import org.jboss.forge.project.packaging.PackagingType;
-import org.jboss.forge.shell.plugins.Alias;
-import org.jboss.forge.shell.plugins.RequiresFacet;
-import org.jboss.forge.shell.plugins.RequiresPackagingType;
-import org.switchyard.tools.forge.AbstractFacet;
+import org.jboss.forge.addon.facets.constraints.RequiresFacet;
+import org.jboss.forge.addon.projects.facets.DependencyFacet;
+import org.jboss.forge.addon.projects.facets.PackagingFacet;
+import org.jboss.forge.addon.projects.facets.RequiresPackagingType;
+import org.switchyard.tools.forge.AbstractSwitchyardFacet;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 
 /**
  * Forge facet for BPM services.
  */
-@Alias("switchyard.bpm")
 @RequiresFacet({ DependencyFacet.class, PackagingFacet.class, SwitchYardFacet.class})
-@RequiresPackagingType(PackagingType.JAR)
-public class BPMFacet extends AbstractFacet {
+@RequiresPackagingType("jar")
+public class BPMFacet extends AbstractSwitchyardFacet {
     
     private static final String BPM_MAVEN_ID = 
         "org.switchyard.components:switchyard-component-bpm";
