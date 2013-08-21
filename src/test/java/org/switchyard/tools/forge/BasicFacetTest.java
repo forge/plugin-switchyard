@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 
 @RunWith(Arquillian.class)
-public class SwitchyardConfigurationTest
+public class BasicFacetTest
 {
    @Deployment
    @Dependencies({
@@ -85,6 +85,6 @@ public class SwitchyardConfigurationTest
       Assert.assertTrue(project.hasFacet(SwitchYardFacet.class));
       Assert.assertNotNull(project.getFacet(SwitchYardFacet.class));
       Assert.assertNotNull(installed.getMergedSwitchYardConfig().getComposite());
-
+      
    }
 }
