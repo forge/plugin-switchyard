@@ -5,7 +5,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.switchyard.tools.forge;
+package org.switchyard.tools.forge.plugin;
 
 import java.io.File;
 
