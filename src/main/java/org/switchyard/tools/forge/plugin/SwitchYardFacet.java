@@ -158,7 +158,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
     */
    public void saveConfig()
    {
-      getFaceted().getFacet(SwitchYardFacet.class).writeSwitchYardConfig();
+      writeSwitchYardConfig();
    }
 
    /**
