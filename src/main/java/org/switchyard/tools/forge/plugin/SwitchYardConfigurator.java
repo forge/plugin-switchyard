@@ -22,7 +22,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
+import javax.xml.namespace.QName;
 
 import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
 import org.jboss.forge.addon.parser.java.resources.JavaResource;
@@ -30,9 +35,12 @@ import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.projects.facets.ResourcesFacet;
 import org.jboss.forge.furnace.services.Exported;
+import org.switchyard.config.model.composite.BindingModel;
 import org.switchyard.config.model.composite.ComponentModel;
 import org.switchyard.config.model.composite.ComponentReferenceModel;
+import org.switchyard.config.model.composite.ComponentServiceModel;
 import org.switchyard.config.model.composite.CompositeModel;
+import org.switchyard.config.model.composite.CompositeServiceModel;
 import org.switchyard.config.model.composite.v1.V1ComponentReferenceModel;
 import org.switchyard.config.model.composite.v1.V1CompositeReferenceModel;
 import org.switchyard.config.model.composite.v1.V1CompositeServiceModel;
@@ -43,12 +51,45 @@ import org.switchyard.config.model.property.PropertiesModel;
 import org.switchyard.config.model.property.PropertyModel;
 import org.switchyard.config.model.property.v1.V1PropertiesModel;
 import org.switchyard.config.model.property.v1.V1PropertyModel;
+import org.switchyard.config.model.selector.JavaOperationSelectorModel;
+import org.switchyard.config.model.selector.OperationSelectorModel;
+import org.switchyard.config.model.selector.RegexOperationSelectorModel;
+import org.switchyard.config.model.selector.StaticOperationSelectorModel;
+import org.switchyard.config.model.selector.XPathOperationSelectorModel;
+import org.switchyard.config.model.selector.v1.V1JavaOperationSelectorModel;
+import org.switchyard.config.model.selector.v1.V1RegexOperationSelectorModel;
+import org.switchyard.config.model.selector.v1.V1StaticOperationSelectorModel;
+import org.switchyard.config.model.selector.v1.V1XPathOperationSelectorModel;
 import org.switchyard.config.model.switchyard.ArtifactModel;
 import org.switchyard.config.model.switchyard.ArtifactsModel;
 import org.switchyard.config.model.switchyard.SwitchYardModel;
 import org.switchyard.config.model.switchyard.v1.V1ArtifactModel;
 import org.switchyard.config.model.switchyard.v1.V1ArtifactsModel;
+import org.switchyard.config.model.transform.TransformModel;
+import org.switchyard.config.model.transform.v1.V1TransformsModel;
+import org.switchyard.config.model.validate.ValidateModel;
+import org.switchyard.config.model.validate.v1.V1ValidatesModel;
+import org.switchyard.policy.Policy;
 import org.switchyard.tools.forge.camel.CamelServiceConfigurator.Type;
+import org.switchyard.transform.config.model.JavaTransformModel;
+import org.switchyard.transform.config.model.SmooksTransformModel;
+import org.switchyard.transform.config.model.XsltTransformModel;
+import org.switchyard.transform.config.model.v1.V1JAXBTransformModel;
+import org.switchyard.transform.config.model.v1.V1JSONTransformModel;
+import org.switchyard.transform.config.model.v1.V1JavaTransformModel;
+import org.switchyard.transform.config.model.v1.V1SmooksTransformModel;
+import org.switchyard.transform.config.model.v1.V1XsltTransformModel;
+import org.switchyard.validate.config.model.FileEntryModel;
+import org.switchyard.validate.config.model.JavaValidateModel;
+import org.switchyard.validate.config.model.SchemaCatalogsModel;
+import org.switchyard.validate.config.model.SchemaFilesModel;
+import org.switchyard.validate.config.model.XmlSchemaType;
+import org.switchyard.validate.config.model.XmlValidateModel;
+import org.switchyard.validate.config.model.v1.V1FileEntryModel;
+import org.switchyard.validate.config.model.v1.V1JavaValidateModel;
+import org.switchyard.validate.config.model.v1.V1SchemaCatalogsModel;
+import org.switchyard.validate.config.model.v1.V1SchemaFilesModel;
+import org.switchyard.validate.config.model.v1.V1XmlValidateModel;
 
 /**
  * Project-level commands for SwitchYard applications.
@@ -411,5 +452,324 @@ public class SwitchYardConfigurator
 
       switchYard.saveConfig();
    }
+   
+   /**
+    * Add a Java Transformer.
+    * @param project project
+    * @param from Transform from (QName)
+    * @param to Transform to (QName)
+    * @param clazz Java class name
+    */
+   public void addJavaTransformer(Project project, String from, String to, String clazz) {
+       JavaTransformModel javaTransform = new V1JavaTransformModel();
+       javaTransform.setClazz(clazz);
+       addTransformer(project, from, to, javaTransform);
+   }
 
+   /**
+    * Add a Smooks Transformer.
+    * @param project project
+    * @param from Transform from (QName)
+    * @param to Transform to (QName)
+    * @param location Smooks file location
+    * @param smtype Type of smooks Transformation
+    */
+   public void addSmooksTransformer(Project project, String from, String to, String location,
+		   String smtype) {
+       SmooksTransformModel smooksTransform = new V1SmooksTransformModel();
+       smooksTransform.setConfig(location);
+       smooksTransform.setTransformType(smtype);
+       addTransformer(project, from, to, smooksTransform);
+
+   }
+   
+   /**
+    * Add a XSLT Transformer.
+    * @param project project
+    * @param from Transform from (QName)
+    * @param to Transform to (QName)
+    * @param xsltFile XSLT file location
+    * @param failOnWar Whether to fail on a warning
+    */
+   public void addXSLTTransformer(Project project, String from, String to, String xsltFile,
+		   boolean failOnWarn) {
+       XsltTransformModel xsltTransform = new V1XsltTransformModel();
+       xsltTransform.setXsltFile(xsltFile);
+       xsltTransform.setFailOnWarning(failOnWarn);
+       addTransformer(project, from, to, xsltTransform);
+
+   }
+   
+   /**
+    * Add a JSON Transformer.
+    * @param project project
+    * @param from Transform from (QName)
+    * @param to Transform to (QName)
+    */
+   public void addJSONTTransformer(Project project, String from, String to) {
+	   TransformModel jsonTransform = new V1JSONTransformModel();
+       addTransformer(project, from, to, jsonTransform);
+
+   }
+   
+   /**
+    * Add a JAXB Transformer.
+    * @param project project
+    * @param from Transform from (QName)
+    * @param to Transform to (QName)
+    */
+   public void addJAXBTransformer(Project project, String from, String to) {
+	   TransformModel jaxbTransform  = new V1JAXBTransformModel();
+       addTransformer(project, from, to, jaxbTransform);
+
+   }
+          
+   /**
+    * Add a Transformer.
+    * @param project project
+    * @param from Transform from (QName)
+    * @param to Transform to (QName)
+    */
+   public void addTransformer(Project project, String from, String to, TransformModel transform) {
+
+       transform.setFrom(QName.valueOf(from));
+       transform.setTo(QName.valueOf(to));
+	
+       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+       if (switchYard.getSwitchYardConfig().getTransforms() == null) {
+           switchYard.getSwitchYardConfig().setTransforms(new V1TransformsModel());
+       }
+       switchYard.getSwitchYardConfig().getTransforms().addTransform(transform);
+       switchYard.saveConfig();	       
+   }
+   
+   private enum ValidatorTypes {
+       Java, XML
+   }
+    
+   /**
+    * Add a Java Validator.
+    * @param project project
+ 	* @param type type of validator
+ 	* @param clazz Class 
+ 	*/
+   public void addJavaValidator(Project project, String type, String clazz) {
+       
+       JavaValidateModel javaValidate = new V1JavaValidateModel();
+       javaValidate.setClazz(clazz);
+       javaValidate.setName(QName.valueOf(type));
+
+       
+       addValidator(project, javaValidate, ValidatorTypes.Java);
+   }
+   
+   /**
+    * Add XML validator.
+    * @param project project
+ 	* @param type type of validator
+ 	* @param schemaTypeString schema type
+ 	* @param schemaCatalog schema catalog
+ 	* @param schemaFile schema file location
+ 	* @param namespaceAware is it namespaceAware
+ 	* @param failOnWarn should we fail on warn
+ 	*/
+   public void addXMLValidator(Project project, String type, String schemaTypeString, String schemaCatalog,
+		   String schemaFile, boolean namespaceAware, boolean failOnWarn) {
+       
+       XmlValidateModel xmlValidate = new V1XmlValidateModel();
+       
+       XmlSchemaType schemaType = XmlSchemaType.valueOf(schemaTypeString);
+       xmlValidate.setSchemaType(schemaType);
+
+       if (schemaCatalog != null && schemaCatalog.trim().length() > 0) {
+           FileEntryModel entry = new V1FileEntryModel().setFile(schemaCatalog);
+           SchemaCatalogsModel catalogs = new V1SchemaCatalogsModel().addEntry(entry);
+           xmlValidate.setSchemaCatalogs(catalogs);
+       }
+       
+       if (XmlSchemaType.DTD != schemaType) {
+           FileEntryModel entry = new V1FileEntryModel().setFile(schemaFile);
+           SchemaFilesModel files = new V1SchemaFilesModel().addEntry(entry);
+           xmlValidate.setSchemaFiles(files);
+           xmlValidate.setNamespaceAware(namespaceAware);
+       }
+       
+       xmlValidate.setFailOnWarning(failOnWarn);
+       xmlValidate.setName(QName.valueOf(type));
+
+       addValidator(project, xmlValidate, ValidatorTypes.XML);
+   }
+   
+
+   /**
+    * Add a message validator.
+    * @param project project
+    * @param validate validator model
+ 	* @param validatorType validator type
+ 	*/
+   public void addValidator(Project project, ValidateModel validate, 
+		   ValidatorTypes validatorType) { 
+                     
+       
+       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+       if (switchYard.getSwitchYardConfig().getValidates() == null) {
+           switchYard.getSwitchYardConfig().setValidates(new V1ValidatesModel());
+       }
+       switchYard.getSwitchYardConfig().getValidates().addValidate(validate);
+       switchYard.saveConfig();       
+   }
+   
+   /**
+    * Add a static operation selector.
+    * @param project project
+    * @param serviceName service name
+    * @param binding binding
+    * @param operationName operation name
+    */
+   public void addStaticOperationSelector(Project project, String serviceName, 
+   			BindingModel binding, String operationName) {
+       StaticOperationSelectorModel staticSelector = new V1StaticOperationSelectorModel();
+       staticSelector.setOperationName(operationName);
+       addOperationSelector(project, serviceName, binding, staticSelector);
+   }
+
+   /**
+    * Add XPath operation selector.
+    * @param project project
+    * @param serviceName service name
+    * @param binding binding
+    * @param xpathExpression XPath expression
+    */
+   public void addXPathOperationSelector(Project project, String serviceName, 
+  			BindingModel binding, String xpathExpression) {
+       XPathOperationSelectorModel xpathSelector = new V1XPathOperationSelectorModel();
+       xpathSelector.setExpression(xpathExpression);
+       addOperationSelector(project, serviceName, binding, xpathSelector);
+   }
+   
+   /**
+    * Add Regex Operation Selector.
+    * @param project project
+    * @param serviceName service name 
+    * @param binding binding
+    * @param regex regex
+    */
+   public void addRegexOperationSelector(Project project, String serviceName,
+		   BindingModel binding, String regex) {
+       RegexOperationSelectorModel regexSelector = new V1RegexOperationSelectorModel();
+       regexSelector.setExpression(regex);
+       addOperationSelector(project, serviceName, binding, regexSelector);
+   }
+   
+   /**
+    * Add Java Operation Selector.
+    * @param project project
+    * @param serviceName service name
+    * @param binding binding
+    * @param clazz java class name
+    */
+   public void addJavaOperationSelector(Project project, String serviceName,
+		   BindingModel binding, String clazz) {
+       JavaOperationSelectorModel javaSelector = new V1JavaOperationSelectorModel();
+       javaSelector.setClazz(clazz);
+       addOperationSelector(project, serviceName, binding, javaSelector);
+   }
+   
+   /**
+    * Add Operation Selector.
+    * @param project project
+    * @param serviceName service name
+    * @param binding binding
+    * @param selector selector
+    */
+   public void addOperationSelector(Project project, String serviceName, 
+		   BindingModel binding, OperationSelectorModel selector) {
+       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+       CompositeServiceModel service = null;
+       for (CompositeServiceModel s : switchYard.getSwitchYardConfig().getComposite().getServices()) {
+           if (s.getName().equals(serviceName)) {
+               service = s;
+           }
+       }
+       if (service == null) {
+           throw new IllegalArgumentException("Service " + serviceName + " could not be found");
+       }
+
+       List<BindingModel> bindingList = service.getBindings(); 
+       if (bindingList.size() == 0) {
+           throw new IllegalArgumentException("There is no binding which supports OperationSelector");
+       }
+
+       List<String> bindingDescList = new ArrayList<String>();
+       
+       binding.setOperationSelector(selector);
+       switchYard.saveConfig();
+   }
+   
+   private enum OperationSelectorType {
+       Static, XPath, Regex, Java
+   }
+    
+   private enum TransformerTypes {
+       Java, Smooks, XSLT, JSON, JAXB
+   }
+   
+   /**
+    * Add a policy.
+    * @param project project
+    * @param componentName component name
+    * @param p policy
+    * @param where where the policy should be added
+    * @param ref component reference
+    */
+   public void addPolicy(Project project, String componentName, Policy p, String where,
+		   ComponentReferenceModel ref) {
+       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+       ComponentModel component = null;
+       for (ComponentModel c : switchYard.getSwitchYardConfig().getComposite().getComponents()) {
+           if (c.getName().equals(componentName)) {
+               component = c;
+               break;
+           }
+       }
+       if (component == null) {
+           for (ComponentModel c : switchYard.getMergedSwitchYardConfig().getComposite().getComponents()) {
+               if (c.getName().equals(componentName)) {
+                   switchYard.getSwitchYardConfig().getComposite().addComponent(c);
+                   component = c;
+                   break;
+               }
+           }
+           
+           if (component == null) {
+        	   throw new IllegalArgumentException("Component " + componentName + " could not be found");
+           }
+       }
+       
+       String target = null;
+
+       if (where.equals("Implementation")) {
+           component.getImplementation().addPolicyRequirement(p.getName());
+           target = "Implementation";
+       } else if (where.equals("Service")) {
+           // component service should be just one
+           ComponentServiceModel service = component.getServices().get(0);
+           service.addPolicyRequirement(p.getName());
+           target = service.getName();
+       } else if (where.equals("Reference")) {
+           if (component.getReferences().size() == 0) {
+        	   throw new IllegalArgumentException("No reference is found in " + componentName);
+           }
+
+           ref.addPolicyRequirement(p.getName());
+           target = ref.getName();
+
+       } else {
+    	   throw new IllegalArgumentException("Unknown place " + where);
+       }
+       
+       switchYard.saveConfig();
+   }
+   
+   
 }
