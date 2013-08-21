@@ -138,18 +138,21 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
    }
 
    @Override
-   public boolean isInstalled() {
-       // checking switchyard.xml existence and if the POM has dependency on switchyard-api 
-       if (super.isInstalled() && getSwitchYardConfigFile().exists()) {
-           if (getVersion() == null) {
-               // If it's switchyard project but POM doesn't have ${switchyard.version} property, add it.
-               setVersion(Versions.getSwitchYardVersion());
-           }
-           return true;
-       }
-       return false;
-    }
-   
+   public boolean isInstalled()
+   {
+      // checking switchyard.xml existence and if the POM has dependency on switchyard-api
+      if (super.isInstalled() && getSwitchYardConfigFile().exists())
+      {
+         if (getVersion() == null)
+         {
+            // If it's switchyard project but POM doesn't have ${switchyard.version} property, add it.
+            setVersion(Versions.getSwitchYardVersion());
+         }
+         return true;
+      }
+      return false;
+   }
+
    /**
     * Save the current SwitchYard configuration model.
     */
@@ -506,9 +509,10 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
          throw new Exception("standalone.xml not available at " + orig.getAbsolutePath());
       }
       File backup = new File(asConfigPath + ".orig");
-      if (backup.exists())
+      int i = 1;
+      while (backup.exists())
       {
-          throw new Exception("backup standalone.xml already exists " + backup.getAbsolutePath());
+         backup = new File(asConfigPath + ".orig." + i++);
       }
       if (!orig.renameTo(backup))
       {
