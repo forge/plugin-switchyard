@@ -266,7 +266,7 @@ public class SwitchyardConfigurationTest
        // Java
        switchYardConfigurator.addJavaTransformer(project, from, to, this.getClass().getName());
        // Smooks
-       switchYardConfigurator.addSmooksTransformer(project, from, to, "/smooks/OrderXML.xml", "SMOOKS");
+       switchYardConfigurator.addSmooksTransformer(project, from, to, "/smooks/OrderXML.xml", "JAVA2XML");
        // XSLT
        switchYardConfigurator.addXSLTTransformer(project, from, to, "xslt/order.xslt", true);
        // JSON
@@ -284,7 +284,7 @@ public class SwitchyardConfigurationTest
            } else if (transform instanceof SmooksTransformModel) {
                SmooksTransformModel smooks = SmooksTransformModel.class.cast(transform);
                Assert.assertEquals("/smooks/OrderXML.xml", smooks.getConfig());
-               Assert.assertEquals("SMOOKS", smooks.getTransformType());
+               Assert.assertEquals("JAVA2XML", smooks.getTransformType());
                expected.remove("Smooks");
            } else if (transform instanceof XsltTransformModel) {
                XsltTransformModel xslt = XsltTransformModel.class.cast(transform);
