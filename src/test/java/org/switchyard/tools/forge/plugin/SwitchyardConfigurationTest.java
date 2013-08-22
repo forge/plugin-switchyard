@@ -30,20 +30,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.switchyard.config.model.composite.CompositeServiceModel;
-import org.switchyard.config.model.composite.v1.V1BindingModel;
-import org.switchyard.config.model.composite.v1.V1CompositeServiceModel;
-import org.switchyard.tools.forge.plugin.SwitchYardConfigurator;
-import org.switchyard.tools.forge.plugin.SwitchYardFacet;
-import org.switchyard.transform.config.model.JAXBTransformModel;
-import org.switchyard.transform.config.model.JSONTransformModel;
-import org.switchyard.transform.config.model.JavaTransformModel;
-import org.switchyard.transform.config.model.SmooksTransformModel;
-import org.switchyard.transform.config.model.XsltTransformModel;
-import org.switchyard.validate.config.model.JavaValidateModel;
-import org.switchyard.validate.config.model.XmlSchemaType;
-import org.switchyard.validate.config.model.XmlValidateModel;
-
 import org.switchyard.config.model.composite.BindingModel;
 import org.switchyard.config.model.composite.ComponentImplementationModel;
 import org.switchyard.config.model.composite.ComponentModel;
@@ -64,10 +50,15 @@ import org.switchyard.config.model.transform.TransformModel;
 import org.switchyard.config.model.validate.ValidateModel;
 import org.switchyard.policy.Policy;
 import org.switchyard.policy.PolicyFactory;
-
-
-
 import org.switchyard.policy.TransactionPolicy;
+import org.switchyard.transform.config.model.JAXBTransformModel;
+import org.switchyard.transform.config.model.JSONTransformModel;
+import org.switchyard.transform.config.model.JavaTransformModel;
+import org.switchyard.transform.config.model.SmooksTransformModel;
+import org.switchyard.transform.config.model.XsltTransformModel;
+import org.switchyard.validate.config.model.JavaValidateModel;
+import org.switchyard.validate.config.model.XmlSchemaType;
+import org.switchyard.validate.config.model.XmlValidateModel;
 
 @RunWith(Arquillian.class)
 public class SwitchyardConfigurationTest
@@ -152,7 +143,7 @@ public class SwitchyardConfigurationTest
    @Test
    public void testAddOperationSelector() throws Exception 
    {
-       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+      SwitchYardFacet switchYard = facetFactory.install(project, SwitchYardFacet.class);
        String serviceName = "ForgeTestService";
        CompositeServiceModel service = new V1CompositeServiceModel();
        service.setName(serviceName);
@@ -189,7 +180,7 @@ public class SwitchyardConfigurationTest
    @Test
    public void testAddPolicy() throws Exception
    {
-       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+      SwitchYardFacet switchYard = facetFactory.install(project, SwitchYardFacet.class);
        ComponentModel component = new V1ComponentModel();
        component.setName("TestComponent");
        ComponentModel noReferenceComponent = new V1ComponentModel();
@@ -238,7 +229,7 @@ public class SwitchyardConfigurationTest
    
    @Test
    public void testAddValidator() {
-       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+      SwitchYardFacet switchYard = facetFactory.install(project, SwitchYardFacet.class);
        String type = "\"{urn:switchyard:forge-test:0.1.0}order\"";
        
        // Java
@@ -270,14 +261,14 @@ public class SwitchyardConfigurationTest
    
    @Test
    public void testAddTransformer()  {
-       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+      SwitchYardFacet switchYard = facetFactory.install(project, SwitchYardFacet.class);
        String from = "\"{urn:switchyard:forge-test:0.1.0}order\"";
        String to = "\"{urn:switchyard:forge-test:0.1.0}orderAck\"";
 
        // Java
        switchYardConfigurator.addJavaTransformer(project, from, to, this.getClass().getName());
        // Smooks
-       switchYardConfigurator.addSmooksTransformer(project, from, to, "/smooks/OrderXML.xml", "JAVA2XML");
+       switchYardConfigurator.addSmooksTransformer(project, from, to, "/smooks/OrderXML.xml", "SMOOKS");
        // XSLT
        switchYardConfigurator.addXSLTTransformer(project, from, to, "xslt/order.xslt", true);
        // JSON
