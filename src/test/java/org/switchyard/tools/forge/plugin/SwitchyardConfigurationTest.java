@@ -237,7 +237,7 @@ public class SwitchyardConfigurationTest
    }
    
    @Test
-   public testAddValidator {
+   public void testAddValidator() {
        SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
        String type = "\"{urn:switchyard:forge-test:0.1.0}order\"";
        
