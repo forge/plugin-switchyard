@@ -197,18 +197,16 @@ public class SwitchyardConfigurationTest
        switchYard.getSwitchYardConfig().getComposite().addComponent(noReferenceComponent);       
        switchYard.saveConfig();
 
-       Policy managedTransLocal = PolicyFactory.getPolicy("managedTransaction.Local");
-       Assert.assertEquals(TransactionPolicy.MANAGED_TRANSACTION_LOCAL, managedTransLocal);
        //Assert.assertTrue(managedTransLocal.supports(PolicyType.IMPLEMENTATION));       
        // Add to Implementation
-       switchYardConfigurator.addPolicy(project, "TestComponent", managedTransLocal, "Implementation", 
-    		   reference);
+       switchYardConfigurator.addPolicy(project, "TestComponent", PolicyFactory.getAvailableImplementationPolicies().toArray(new Policy[0])[0], 
+       	"Implementation", reference);
              
        Policy propogatesTrans = PolicyFactory.getPolicy("propagatesTransaction");
        Assert.assertEquals(TransactionPolicy.PROPAGATES_TRANSACTION, propogatesTrans);
        //Assert.assertTrue(propogatesTrans.supports(PolicyType.INTERACTION));
        // Add to Interaction
-       switchYardConfigurator.addPolicy(project, "TestComponent", propogatesTrans, "Service", 
+       switchYardConfigurator.addPolicy(project, "TestComponent", PolicyFactory.getAvailableInteractionPolicies().toArray(new Policy[0])[0], "Service", 
     		   reference);
 
        boolean caughtException = false;
@@ -218,12 +216,12 @@ public class SwitchyardConfigurationTest
        } catch (IllegalArgumentException iae) {
     	   caughtException = true;
        }
-       switchYardConfigurator.addPolicy(project, "TestComponent", propogatesTrans, "Reference", reference);
+       switchYardConfigurator.addPolicy(project, "TestComponent", PolicyFactory.getAvailableInteractionPolicies().toArray(new Policy[0])[1], "Reference", reference);
        
        // Verify generated policies
        component = switchYard.getSwitchYardConfig().getComposite().getComponents().get(0);
-       Assert.assertEquals(PolicyFactory.getAvailableInteractionPolicies().toArray(new Policy[0])[0].getName(), component.getServices().get(0).getPolicyRequirements().iterator().next());
        Assert.assertEquals(PolicyFactory.getAvailableImplementationPolicies().toArray(new Policy[0])[0].getName(), component.getImplementation().getPolicyRequirements().iterator().next());
+       Assert.assertEquals(PolicyFactory.getAvailableInteractionPolicies().toArray(new Policy[0])[0].getName(), component.getServices().get(0).getPolicyRequirements().iterator().next());       
        Assert.assertEquals(PolicyFactory.getAvailableInteractionPolicies().toArray(new Policy[0])[1].getName(), component.getReferences().get(0).getPolicyRequirements().iterator().next());
    }
    
