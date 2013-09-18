@@ -34,7 +34,6 @@ import org.jboss.forge.addon.parser.java.resources.JavaResource;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.projects.facets.ResourcesFacet;
-import org.jboss.forge.furnace.services.Exported;
 import org.switchyard.config.model.composite.BindingModel;
 import org.switchyard.config.model.composite.ComponentModel;
 import org.switchyard.config.model.composite.ComponentReferenceModel;
@@ -94,7 +93,7 @@ import org.switchyard.validate.config.model.v1.V1XmlValidateModel;
 /**
  * Project-level commands for SwitchYard applications.
  */
-@Exported
+
 public class SwitchYardConfigurator
 {
 

@@ -22,7 +22,6 @@ package org.switchyard.tools.forge.camel;
 import java.net.URI;
 
 import org.jboss.forge.addon.projects.Project;
-import org.jboss.forge.furnace.services.Exported;
 import org.switchyard.component.camel.core.model.v1.V1CamelBindingModel;
 import org.switchyard.config.model.composite.CompositeReferenceModel;
 import org.switchyard.config.model.composite.CompositeServiceModel;
@@ -31,7 +30,7 @@ import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 /**
  * Forge plugin for Camel binding commands.
  */
-@Exported
+
 public class CamelBindingConfigurator
 {
 

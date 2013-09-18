@@ -20,7 +20,6 @@
 package org.switchyard.tools.forge.clojure;
 
 import org.jboss.forge.addon.projects.Project;
-import org.jboss.forge.furnace.services.Exported;
 import org.switchyard.component.clojure.config.model.ClojureComponentImplementationModel;
 import org.switchyard.config.model.composite.v1.V1ComponentModel;
 import org.switchyard.config.model.composite.v1.V1ComponentServiceModel;
@@ -32,7 +31,7 @@ import org.switchyard.tools.forge.plugin.SwitchYardFacet;
  * 
  * @author Daniel Bevenius
  */
-@Exported
+
 public class ClojureImplementationConfigurator
 {
 

@@ -25,7 +25,6 @@ import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
 import org.jboss.forge.addon.parser.java.resources.JavaResource;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
-import org.jboss.forge.furnace.services.Exported;
 import org.jboss.forge.parser.JavaParser;
 import org.jboss.forge.parser.java.Annotation;
 import org.jboss.forge.parser.java.Field;
@@ -39,7 +38,7 @@ import org.switchyard.component.bean.Reference;
  * @author Antollini Mario.
  * 
  */
-@Exported
+
 public class BeanReferenceConfigurator
 {
 

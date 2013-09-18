@@ -27,7 +27,6 @@ import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.projects.facets.ResourcesFacet;
-import org.jboss.forge.furnace.services.Exported;
 import org.jboss.forge.parser.JavaParser;
 import org.jboss.forge.parser.java.JavaInterface;
 
@@ -52,7 +51,7 @@ import org.switchyard.tools.forge.plugin.TemplateResource;
 /**
  * Forge plugin for Rules component commands.
  */
-@Exported
+
 public class RulesServiceConfigurator
 {
 
