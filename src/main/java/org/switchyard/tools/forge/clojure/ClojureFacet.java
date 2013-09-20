@@ -19,7 +19,7 @@
 
 package org.switchyard.tools.forge.clojure;
 
-import org.jboss.forge.addon.facets.constraints.RequiresFacet;
+import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
 import org.jboss.forge.addon.projects.facets.RequiresPackagingType;
@@ -30,7 +30,7 @@ import org.switchyard.tools.forge.AbstractSwitchyardFacet;
  * 
  * @author Daniel Bevenius
  */
-@RequiresFacet({ DependencyFacet.class, PackagingFacet.class })
+@FacetConstraint({ DependencyFacet.class, PackagingFacet.class })
 @RequiresPackagingType("jar")
 public class ClojureFacet extends AbstractSwitchyardFacet
 {

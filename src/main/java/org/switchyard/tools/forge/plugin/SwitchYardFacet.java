@@ -43,7 +43,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.jboss.forge.addon.dependencies.Dependency;
 import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
-import org.jboss.forge.addon.facets.constraints.RequiresFacet;
+import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.maven.projects.MavenFacet;
 import org.jboss.forge.addon.maven.projects.MavenPluginFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
@@ -71,7 +71,7 @@ import org.switchyard.tools.forge.AbstractSwitchyardFacet;
  * Responsible for common functionality and dependency management for SwitchYard projects. Each component should provide
  * it's own facet implementation and reference the SwitchYard facet using <code>@RequiresFacet</code>.
  */
-@RequiresFacet({ DependencyFacet.class, MavenPluginFacet.class, PackagingFacet.class })
+@FacetConstraint({ DependencyFacet.class, MavenPluginFacet.class, PackagingFacet.class })
 @RequiresPackagingType("jar")
 public class SwitchYardFacet extends AbstractSwitchyardFacet
 {

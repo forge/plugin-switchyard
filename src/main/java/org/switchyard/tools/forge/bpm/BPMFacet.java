@@ -19,7 +19,7 @@
 
 package org.switchyard.tools.forge.bpm;
 
-import org.jboss.forge.addon.facets.constraints.RequiresFacet;
+import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
 import org.jboss.forge.addon.projects.facets.RequiresPackagingType;
@@ -29,23 +29,26 @@ import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 /**
  * Forge facet for BPM services.
  */
-@RequiresFacet({ DependencyFacet.class, PackagingFacet.class, SwitchYardFacet.class})
+@FacetConstraint({ DependencyFacet.class, PackagingFacet.class, SwitchYardFacet.class })
 @RequiresPackagingType("jar")
-public class BPMFacet extends AbstractSwitchyardFacet {
-    
-    private static final String BPM_MAVEN_ID = 
-        "org.switchyard.components:switchyard-component-bpm";
+public class BPMFacet extends AbstractSwitchyardFacet
+{
 
-    /**
-     * Create a new BeanFacet.
-     */
-    public BPMFacet() {
-        super(BPM_MAVEN_ID);
-    }
-    
-    @Override
-    public boolean install() {
-        installDependencies();
-        return true;
-    }
+   private static final String BPM_MAVEN_ID =
+            "org.switchyard.components:switchyard-component-bpm";
+
+   /**
+    * Create a new BeanFacet.
+    */
+   public BPMFacet()
+   {
+      super(BPM_MAVEN_ID);
+   }
+
+   @Override
+   public boolean install()
+   {
+      installDependencies();
+      return true;
+   }
 }
