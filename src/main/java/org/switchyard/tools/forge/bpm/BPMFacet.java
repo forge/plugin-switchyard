@@ -19,8 +19,7 @@
 
 package org.switchyard.tools.forge.bpm;
 
-import org.jboss.forge.addon.facets.constraints.FacetConstraint;
-import org.jboss.forge.addon.facets.constraints.FacetConstraints;
+import org.jboss.forge.addon.facets.constraints.RequiresFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
 import org.jboss.forge.addon.projects.facets.RequiresPackagingType;
@@ -30,12 +29,7 @@ import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 /**
  * Forge facet for BPM services.
  */
-
-@FacetConstraints({
-    @FacetConstraint(value= DependencyFacet.class),
-    @FacetConstraint(value= PackagingFacet.class),
-    @FacetConstraint(value= SwitchYardFacet.class)
-})
+@RequiresFacet({ DependencyFacet.class, PackagingFacet.class, SwitchYardFacet.class})
 @RequiresPackagingType("jar")
 public class BPMFacet extends AbstractSwitchyardFacet {
     
