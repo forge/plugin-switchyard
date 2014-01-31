@@ -33,7 +33,7 @@ public class BasicFacetTest
    @Deployment
    @Dependencies({
             @AddonDependency(name = "org.jboss.forge.furnace.container:cdi"),
-            @AddonDependency(name = "org.switchyard.forge:switchyard-addon", version = "2.0.0-SNAPSHOT"),
+            @AddonDependency(name = "org.switchyard.forge:switchyard-addon"),
             @AddonDependency(name = "org.jboss.forge.addon:projects"),
             @AddonDependency(name = "org.jboss.forge.addon:maven")
    })
@@ -85,6 +85,6 @@ public class BasicFacetTest
       Assert.assertTrue(project.hasFacet(SwitchYardFacet.class));
       Assert.assertNotNull(project.getFacet(SwitchYardFacet.class));
       Assert.assertNotNull(installed.getMergedSwitchYardConfig().getComposite());
-      
+
    }
 }

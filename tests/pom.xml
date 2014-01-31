@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
    <parent>
       <groupId>org.switchyard.forge</groupId>
@@ -6,39 +7,40 @@
       <version>2.0.0-SNAPSHOT</version>
    </parent>
    <artifactId>switchyard-forge-tests</artifactId>
-   <version>2.0.0-SNAPSHOT</version>
+
    <name>Forge - SwitchYard Addon Tests</name>
+
    <dependencies>
       <dependency>
          <groupId>org.switchyard.forge</groupId>
-	 <artifactId>switchyard-addon</artifactId>
-         <version>2.0.0-SNAPSHOT</version>
+         <artifactId>switchyard-addon</artifactId>
          <classifier>forge-addon</classifier>
-	 <scope>test</scope>
+         <version>${project.version}</version>
+         <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <artifactId>javassist</artifactId>
+               <groupId>org.javassist</groupId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.jboss.forge.addon</groupId>
          <artifactId>projects</artifactId>
-	 <version>${forge.version}</version>
          <classifier>forge-addon</classifier>
+         <version>${forge.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.addon</groupId>
+         <artifactId>maven</artifactId>
+         <classifier>forge-addon</classifier>
+         <version>${forge.version}</version>
       </dependency>
       <dependency>
          <groupId>org.jboss.forge.addon</groupId>
          <artifactId>configuration</artifactId>
-	 <version>${forge.version}</version>
          <classifier>forge-addon</classifier>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.forge.furnace.test</groupId>
-         <artifactId>furnace-test-harness</artifactId>
-         <version>${furnace.version}</version>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.forge.furnace.test</groupId>
-         <artifactId>arquillian-furnace-classpath</artifactId>
-         <version>${furnace.version}</version>
-         <scope>test</scope>
+         <version>${forge.version}</version>
       </dependency>
       <dependency>
          <groupId>org.jboss.forge.addon</groupId>
@@ -48,6 +50,18 @@
       </dependency>
 
       <!-- Furnace Container -->
+      <dependency>
+         <groupId>org.jboss.forge.furnace.test</groupId>
+         <artifactId>furnace-test-harness</artifactId>
+         <scope>test</scope>
+         <version>${furnace.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.furnace.test</groupId>
+         <artifactId>arquillian-furnace-classpath</artifactId>
+         <scope>test</scope>
+         <version>${furnace.version}</version>
+      </dependency>
       <dependency>
          <groupId>org.jboss.forge.furnace.container</groupId>
          <artifactId>cdi</artifactId>
