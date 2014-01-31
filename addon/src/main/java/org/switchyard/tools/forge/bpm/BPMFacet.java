@@ -31,21 +31,24 @@ import org.switchyard.tools.forge.plugin.SwitchYardFacet;
  */
 @FacetConstraint({ DependencyFacet.class, PackagingFacet.class, SwitchYardFacet.class})
 @RequiresPackagingType("jar")
-public class BPMFacet extends AbstractSwitchyardFacet {
-    
-    private static final String BPM_MAVEN_ID = 
-        "org.switchyard.components:switchyard-component-bpm";
+public class BPMFacet extends AbstractSwitchyardFacet
+{
 
-    /**
-     * Create a new BeanFacet.
-     */
-    public BPMFacet() {
-        super(BPM_MAVEN_ID);
-    }
-    
-    @Override
-    public boolean install() {
-        installDependencies();
-        return true;
-    }
+   private static final String BPM_MAVEN_ID =
+            "org.switchyard.components:switchyard-component-bpm";
+
+   /**
+    * Create a new BeanFacet.
+    */
+   public BPMFacet()
+   {
+      super(BPM_MAVEN_ID);
+   }
+
+   @Override
+   public boolean install()
+   {
+      installDependencies();
+      return true;
+   }
 }

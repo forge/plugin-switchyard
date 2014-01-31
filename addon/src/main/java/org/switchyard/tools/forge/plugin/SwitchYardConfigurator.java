@@ -571,12 +571,10 @@ public class SwitchYardConfigurator
  	* @param namespaceAware is it namespaceAware
  	* @param failOnWarn should we fail on warn
  	*/
-   public void addXMLValidator(Project project, String type, String schemaTypeString, String schemaCatalog,
+   public void addXMLValidator(Project project, String type, XmlSchemaType schemaType, String schemaCatalog,
 		   String schemaFile, boolean namespaceAware, boolean failOnWarn) {
        
        XmlValidateModel xmlValidate = new V1XmlValidateModel();
-       
-       XmlSchemaType schemaType = XmlSchemaType.valueOf(schemaTypeString);
        xmlValidate.setSchemaType(schemaType);
 
        if (schemaCatalog != null && schemaCatalog.trim().length() > 0) {
