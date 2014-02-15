@@ -1,22 +1,16 @@
-/* 
- * JBoss, Home of Professional Open Source 
- * Copyright 2011 Red Hat Inc. and/or its affiliates and other contributors
- * as indicated by the @author tags. All rights reserved. 
- * See the copyright.txt in the distribution for a 
- * full listing of individual contributors.
+/*
+ * Copyright 2014 Red Hat Inc. and/or its affiliates and other contributors.
  *
- * This copyrighted material is made available to anyone wishing to use, 
- * modify, copy, or redistribute it subject to the terms and conditions 
- * of the GNU Lesser General Public License, v. 2.1. 
- * This program is distributed in the hope that it will be useful, but WITHOUT A 
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
- * PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details. 
- * You should have received a copy of the GNU Lesser General Public License, 
- * v.2.1 along with this distribution; if not, write to the Free Software 
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
- * MA  02110-1301, USA.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package org.switchyard.tools.forge.camel;
 
 import java.util.Arrays;
@@ -32,7 +26,10 @@ import org.switchyard.config.model.composite.v1.V1InterfaceModel;
 
 import org.switchyard.config.model.switchyard.SwitchYardModel;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
+import org.switchyard.component.camel.model.CamelNamespace;
+import org.switchyard.config.model.switchyard.SwitchYardNamespace;
 import org.switchyard.tools.forge.plugin.TemplateResource;
+
 
 /**
  * Commands related to Camel services.
@@ -54,12 +51,12 @@ public class CamelServiceConfigurator
     * @param wsdlPort WSDL portType (ex. MyService);
     * @param interfaceClass the fully qualified java interface class (only required if Type is JAVA)
     */
-   public void createXMLRoute(Project project, String routeName, InterfaceType type, String wsdlPath, String wsdlPort,
+   public void createXMLRoute(Project project, String routeName, InterfaceTypes type, String wsdlPath, String wsdlPort,
             String interfaceClass) throws java.io.IOException
    {
        List<String> typeList = Arrays.asList(new String[] {"wsdl", "java"});
        String intfValue;
-       if (InterfaceType.WSDL.equals(type))
+       if (InterfaceTypes.WSDL.equals(type))
        {
            intfValue = wsdlPath + "#wsdl.porttype(" + wsdlPort + ")";
        }
@@ -73,7 +70,7 @@ public class CamelServiceConfigurator
       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
       V1ComponentModel component = new V1ComponentModel();
       component.setName(routeName + "Component");
-      V1ComponentServiceModel service = new V1ComponentServiceModel();
+      V1ComponentServiceModel service = new V1ComponentServiceModel(SwitchYardNamespace.DEFAULT.uri());
       service.setName(routeName);
       component.addService(service);
       V1InterfaceModel intfModel = new V1InterfaceModel(type.getType());
@@ -81,7 +78,7 @@ public class CamelServiceConfigurator
       service.setInterface(intfModel);
 
       // Create the Camel implementation model and XML route
-      V1CamelImplementationModel impl = new V1CamelImplementationModel();
+      V1CamelImplementationModel impl = new V1CamelImplementationModel(CamelNamespace.DEFAULT.uri());
       TemplateResource xmlRoute = new TemplateResource(ROUTE_XML_TEMPLATE);
       String routeFile = routeName + ".xml";
       xmlRoute.serviceName(routeName);

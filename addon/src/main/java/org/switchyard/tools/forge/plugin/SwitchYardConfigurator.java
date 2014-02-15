@@ -1,20 +1,15 @@
-/* 
- * JBoss, Home of Professional Open Source 
- * Copyright 2011 Red Hat Inc. and/or its affiliates and other contributors
- * as indicated by the @author tags. All rights reserved. 
- * See the copyright.txt in the distribution for a 
- * full listing of individual contributors.
+/*
+ * Copyright 2014 Red Hat Inc. and/or its affiliates and other contributors.
  *
- * This copyrighted material is made available to anyone wishing to use, 
- * modify, copy, or redistribute it subject to the terms and conditions 
- * of the GNU Lesser General Public License, v. 2.1. 
- * This program is distributed in the hope that it will be useful, but WITHOUT A 
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
- * PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details. 
- * You should have received a copy of the GNU Lesser General Public License, 
- * v.2.1 along with this distribution; if not, write to the Free Software 
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
- * MA  02110-1301, USA.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.switchyard.tools.forge.plugin;
 
@@ -39,6 +34,7 @@ import org.switchyard.config.model.composite.ComponentModel;
 import org.switchyard.config.model.composite.ComponentReferenceModel;
 import org.switchyard.config.model.composite.ComponentServiceModel;
 import org.switchyard.config.model.composite.CompositeModel;
+import org.switchyard.config.model.composite.CompositeReferenceModel;
 import org.switchyard.config.model.composite.CompositeServiceModel;
 import org.switchyard.config.model.composite.v1.V1ComponentReferenceModel;
 import org.switchyard.config.model.composite.v1.V1CompositeReferenceModel;
@@ -62,6 +58,7 @@ import org.switchyard.config.model.selector.v1.V1XPathOperationSelectorModel;
 import org.switchyard.config.model.switchyard.ArtifactModel;
 import org.switchyard.config.model.switchyard.ArtifactsModel;
 import org.switchyard.config.model.switchyard.SwitchYardModel;
+import org.switchyard.config.model.switchyard.SwitchYardNamespace;
 import org.switchyard.config.model.switchyard.v1.V1ArtifactModel;
 import org.switchyard.config.model.switchyard.v1.V1ArtifactsModel;
 import org.switchyard.config.model.transform.TransformModel;
@@ -69,9 +66,14 @@ import org.switchyard.config.model.transform.v1.V1TransformsModel;
 import org.switchyard.config.model.validate.ValidateModel;
 import org.switchyard.config.model.validate.v1.V1ValidatesModel;
 import org.switchyard.policy.Policy;
-import org.switchyard.tools.forge.camel.InterfaceType;
+import org.switchyard.tools.forge.plugin.OperationSelectorTypes;
+import org.switchyard.tools.forge.plugin.PolicyPlacementLocations;
+import org.switchyard.tools.forge.plugin.TransformerTypes;
+import org.switchyard.tools.forge.plugin.ValidatorTypes;
+import org.switchyard.tools.forge.camel.InterfaceTypes;
 import org.switchyard.transform.config.model.JavaTransformModel;
 import org.switchyard.transform.config.model.SmooksTransformModel;
+import org.switchyard.transform.config.model.TransformNamespace;
 import org.switchyard.transform.config.model.XsltTransformModel;
 import org.switchyard.transform.config.model.v1.V1JAXBTransformModel;
 import org.switchyard.transform.config.model.v1.V1JSONTransformModel;
@@ -82,6 +84,7 @@ import org.switchyard.validate.config.model.FileEntryModel;
 import org.switchyard.validate.config.model.JavaValidateModel;
 import org.switchyard.validate.config.model.SchemaCatalogsModel;
 import org.switchyard.validate.config.model.SchemaFilesModel;
+import org.switchyard.validate.config.model.ValidateNamespace;
 import org.switchyard.validate.config.model.XmlSchemaType;
 import org.switchyard.validate.config.model.XmlValidateModel;
 import org.switchyard.validate.config.model.v1.V1FileEntryModel;
@@ -89,6 +92,12 @@ import org.switchyard.validate.config.model.v1.V1JavaValidateModel;
 import org.switchyard.validate.config.model.v1.V1SchemaCatalogsModel;
 import org.switchyard.validate.config.model.v1.V1SchemaFilesModel;
 import org.switchyard.validate.config.model.v1.V1XmlValidateModel;
+
+//import org.jboss.aesh.terminal.CharacterType;
+//import org.jboss.aesh.terminal.Color;
+//import org.jboss.aesh.terminal.TerminalColor;
+//import org.jboss.aesh.terminal.TerminalString;
+//import org.jboss.aesh.terminal.TerminalTextStyle;
 
 /**
  * Project-level commands for SwitchYard applications.
@@ -104,7 +113,7 @@ public class SwitchYardConfigurator
    // MessageTrace handler name and class
    private static final String TRACE_CLASS = "org.switchyard.handlers.MessageTrace";
    private static final String TRACE_NAME = "MessageTrace";
-// MessageTrace handler name and class
+   // MessageTrace handler name and class
    private static final String TRACE_PROPERTY = "org.switchyard.handlers.messageTrace.enabled";
 
    /**
@@ -182,10 +191,6 @@ public class SwitchYardConfigurator
       switchYard.saveConfig();
    }
 
-   
-   
-   
-   
    /**
     * Add a unit test for a service.
     * 
@@ -214,48 +219,53 @@ public class SwitchYardConfigurator
     * @param enable true to enable tracing, false to disable
     * @param out shell output
     */
-   public void traceMessages(Project project, final boolean enable)
+   public String traceMessages(Project project, final Boolean enable)
    {
 
       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+      SwitchYardModel switchYardConfig = switchYard.getSwitchYardConfig();
+      String switchYardNamespace = getSwitchYardNamespace(switchYardConfig);
       DomainModel domain = switchYard.getSwitchYardConfig().getDomain();
       String result;
 
       // If enable option is not specified or enable=true, then enable the MessageTrace handler
-      if (enable)
-      {
-         // create the domain config if it doesn't exist already
-         if (domain == null)
-         {
-            domain = new V1DomainModel();
-            switchYard.getSwitchYardConfig().setDomain(domain);
-         }
-         
-         // need to create the properties config if it's not already present
-         PropertiesModel properties = domain.getProperties();
-         if (properties == null) {
-             properties = new V1PropertiesModel();
-             domain.setProperties(properties);
-         }
-         PropertyModel property = properties.getProperty(TRACE_PROPERTY);
-         if (property == null) {
-             property = new V1PropertyModel();
-             property.setName(TRACE_PROPERTY);
-         }
-         property.setValue("true");
-         result = "Message tracing has been enabled.";
-      }
-      else
-      {
+      if (enable == null || enable) {
+          // create the domain config if it doesn't exist already
+          if (domain == null) {
+              domain = new V1DomainModel(switchYardNamespace);
+              switchYardConfig.setDomain(domain);
+          }
+          // need to create the properties config if it's not already present
+          PropertiesModel properties = domain.getProperties();
+          if (properties == null) {
+              properties = new V1PropertiesModel(switchYardNamespace);
+              domain.setProperties(properties);
+          }
+          PropertyModel property = properties.getProperty(TRACE_PROPERTY);
+          if (property == null) {
+        	  property = new V1PropertyModel(switchYardNamespace);
+              property.setName(TRACE_PROPERTY);
+              properties.addProperty(property);
+          }
+          property.setValue("true");
+          result = "Message tracing has been enabled.";
+      } else {
           // Disable the handler by removing the configuration
-          if (domain != null && domain.getProperties() != null) {
-              domain.getProperties().removeProperty(TRACE_PROPERTY);
+          if (domain != null) {
+              PropertiesModel properties = domain.getProperties();
+              if (properties != null) {
+                  PropertyModel property = properties.getProperty(TRACE_PROPERTY);
+                  if (property != null) {
+                	  property.setValue("false");
+                  }
+              }
           }
           result = "Message tracing has been disabled.";
       }
 
       // Save configuration changes
       switchYard.saveConfig();
+      return result;
    }
 
    /**
@@ -306,13 +316,15 @@ public class SwitchYardConfigurator
       }
 
       // update config
-      ArtifactsModel artifacts = switchYard.getSwitchYardConfig().getArtifacts();
+      SwitchYardModel switchYardConfig = switchYard.getSwitchYardConfig();
+      String switchYardNamespace = getSwitchYardNamespace(switchYardConfig);
+      ArtifactsModel artifacts = switchYardConfig.getArtifacts();
       if (artifacts == null)
       {
-         artifacts = new V1ArtifactsModel();
-         switchYard.getSwitchYardConfig().setArtifacts(artifacts);
+          artifacts = new V1ArtifactsModel(switchYardNamespace);
+          switchYard.getSwitchYardConfig().setArtifacts(artifacts);
       }
-      ArtifactModel artifact = new V1ArtifactModel();
+      ArtifactModel artifact = new V1ArtifactModel(switchYardNamespace);
       artifact.setName(name);
       artifact.setURL(urlStr);
       artifacts.addArtifact(artifact);
@@ -361,7 +373,7 @@ public class SwitchYardConfigurator
     * @param componentName the name of the component the reference will be applied to
     * @param out shell output
     */
-   public void addReference(Project project, final String referenceName, final InterfaceType type, final String interfaze,
+   public void addReference(Project project, final String referenceName, final String interfaceType, final String interfaze,
             final String componentName)
    {
 
@@ -402,16 +414,16 @@ public class SwitchYardConfigurator
          }
       }
 
-      addComponentReference(switchYard, componentName, referenceName, type, interfaze);
+      addComponentReference(switchYard, componentName, referenceName, interfaceType, interfaze);
    }
 
    private void addComponentReference(SwitchYardFacet switchYard, String componentName, String referenceName,
-            InterfaceType interfaceType, String interfaze)
+            String interfaceType, String interfaze)
    {
 
-      ComponentReferenceModel reference = new V1ComponentReferenceModel();
+      ComponentReferenceModel reference = new V1ComponentReferenceModel(SwitchYardNamespace.DEFAULT.uri());
       reference.setName(referenceName);
-      V1InterfaceModel referenceInterfaceModel = new V1InterfaceModel(interfaceType.getType());
+      V1InterfaceModel referenceInterfaceModel = new V1InterfaceModel(interfaceType);
       referenceInterfaceModel.setInterface(interfaze);
       reference.setInterface(referenceInterfaceModel);
 
@@ -459,7 +471,7 @@ public class SwitchYardConfigurator
     * @param clazz Java class name
     */
    public void addJavaTransformer(Project project, String from, String to, String clazz) {
-       JavaTransformModel javaTransform = new V1JavaTransformModel();
+       JavaTransformModel javaTransform = new V1JavaTransformModel(TransformNamespace.DEFAULT.uri());
        javaTransform.setClazz(clazz);
        addTransformer(project, from, to, javaTransform);
    }
@@ -474,7 +486,7 @@ public class SwitchYardConfigurator
     */
    public void addSmooksTransformer(Project project, String from, String to, String location,
 		   String smtype) {
-       SmooksTransformModel smooksTransform = new V1SmooksTransformModel();
+       SmooksTransformModel smooksTransform = new V1SmooksTransformModel(TransformNamespace.DEFAULT.uri());
        smooksTransform.setConfig(location);
        smooksTransform.setTransformType(smtype);
        addTransformer(project, from, to, smooksTransform);
@@ -491,7 +503,7 @@ public class SwitchYardConfigurator
     */
    public void addXSLTTransformer(Project project, String from, String to, String xsltFile,
 		   boolean failOnWarn) {
-       XsltTransformModel xsltTransform = new V1XsltTransformModel();
+       XsltTransformModel xsltTransform = new V1XsltTransformModel(TransformNamespace.DEFAULT.uri());
        xsltTransform.setXsltFile(xsltFile);
        xsltTransform.setFailOnWarning(failOnWarn);
        addTransformer(project, from, to, xsltTransform);
@@ -504,8 +516,8 @@ public class SwitchYardConfigurator
     * @param from Transform from (QName)
     * @param to Transform to (QName)
     */
-   public void addJSONTTransformer(Project project, String from, String to) {
-	   TransformModel jsonTransform = new V1JSONTransformModel();
+   public void addJSONTransformer(Project project, String from, String to) {
+	   TransformModel jsonTransform = new V1JSONTransformModel(TransformNamespace.DEFAULT.uri());
        addTransformer(project, from, to, jsonTransform);
 
    }
@@ -517,7 +529,7 @@ public class SwitchYardConfigurator
     * @param to Transform to (QName)
     */
    public void addJAXBTransformer(Project project, String from, String to) {
-	   TransformModel jaxbTransform  = new V1JAXBTransformModel();
+	   TransformModel jaxbTransform  = new V1JAXBTransformModel(TransformNamespace.DEFAULT.uri());
        addTransformer(project, from, to, jaxbTransform);
 
    }
@@ -534,17 +546,15 @@ public class SwitchYardConfigurator
        transform.setTo(QName.valueOf(to));
 	
        SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+       SwitchYardModel switchYardConfig = switchYard.getSwitchYardConfig();
        if (switchYard.getSwitchYardConfig().getTransforms() == null) {
-           switchYard.getSwitchYardConfig().setTransforms(new V1TransformsModel());
+    	   String switchYardNamespace = getSwitchYardNamespace(switchYardConfig);
+           switchYardConfig.setTransforms(new V1TransformsModel(switchYardNamespace));
        }
        switchYard.getSwitchYardConfig().getTransforms().addTransform(transform);
        switchYard.saveConfig();	       
    }
-   
-   private enum ValidatorTypes {
-       Java, XML
-   }
-    
+       
    /**
     * Add a Java Validator.
     * @param project project
@@ -553,12 +563,11 @@ public class SwitchYardConfigurator
  	*/
    public void addJavaValidator(Project project, String type, String clazz) {
        
-       JavaValidateModel javaValidate = new V1JavaValidateModel();
+       JavaValidateModel javaValidate = new V1JavaValidateModel(ValidateNamespace.DEFAULT.uri());
        javaValidate.setClazz(clazz);
        javaValidate.setName(QName.valueOf(type));
-
        
-       addValidator(project, javaValidate, ValidatorTypes.Java);
+       addValidator(project, javaValidate, ValidatorTypes.JAVA);
    }
    
    /**
@@ -574,18 +583,18 @@ public class SwitchYardConfigurator
    public void addXMLValidator(Project project, String type, XmlSchemaType schemaType, String schemaCatalog,
 		   String schemaFile, boolean namespaceAware, boolean failOnWarn) {
        
-       XmlValidateModel xmlValidate = new V1XmlValidateModel();
+       XmlValidateModel xmlValidate = new V1XmlValidateModel(ValidateNamespace.DEFAULT.uri());
        xmlValidate.setSchemaType(schemaType);
 
        if (schemaCatalog != null && schemaCatalog.trim().length() > 0) {
-           FileEntryModel entry = new V1FileEntryModel().setFile(schemaCatalog);
-           SchemaCatalogsModel catalogs = new V1SchemaCatalogsModel().addEntry(entry);
+           FileEntryModel entry = new V1FileEntryModel(ValidateNamespace.DEFAULT.uri()).setFile(schemaCatalog);
+           SchemaCatalogsModel catalogs = new V1SchemaCatalogsModel(ValidateNamespace.DEFAULT.uri()).addEntry(entry);
            xmlValidate.setSchemaCatalogs(catalogs);
        }
        
        if (XmlSchemaType.DTD != schemaType) {
-           FileEntryModel entry = new V1FileEntryModel().setFile(schemaFile);
-           SchemaFilesModel files = new V1SchemaFilesModel().addEntry(entry);
+    	   FileEntryModel entry = new V1FileEntryModel(ValidateNamespace.DEFAULT.uri()).setFile(schemaFile);
+           SchemaFilesModel files = new V1SchemaFilesModel(ValidateNamespace.DEFAULT.uri()).addEntry(entry);
            xmlValidate.setSchemaFiles(files);
            xmlValidate.setNamespaceAware(namespaceAware);
        }
@@ -608,11 +617,15 @@ public class SwitchYardConfigurator
                      
        
        SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
-       if (switchYard.getSwitchYardConfig().getValidates() == null) {
-           switchYard.getSwitchYardConfig().setValidates(new V1ValidatesModel());
+       SwitchYardModel switchYardConfig = switchYard.getSwitchYardConfig();
+       if (switchYardConfig.getValidates() == null) {
+           String switchYardNamespace = getSwitchYardNamespace(switchYardConfig);
+           switchYardConfig.setValidates(new V1ValidatesModel(switchYardNamespace));
        }
-       switchYard.getSwitchYardConfig().getValidates().addValidate(validate);
-       switchYard.saveConfig();       
+       switchYardConfig.getValidates().addValidate(validate);
+       switchYard.saveConfig();
+
+
    }
    
    /**
@@ -624,7 +637,10 @@ public class SwitchYardConfigurator
     */
    public void addStaticOperationSelector(Project project, String serviceName, 
    			BindingModel binding, String operationName) {
-       StaticOperationSelectorModel staticSelector = new V1StaticOperationSelectorModel();
+       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+       SwitchYardModel switchYardConfig = switchYard.getSwitchYardConfig();
+       String switchYardNamespace = getSwitchYardNamespace(switchYardConfig);
+	   StaticOperationSelectorModel staticSelector = new V1StaticOperationSelectorModel(switchYardNamespace);
        staticSelector.setOperationName(operationName);
        addOperationSelector(project, serviceName, binding, staticSelector);
    }
@@ -638,7 +654,10 @@ public class SwitchYardConfigurator
     */
    public void addXPathOperationSelector(Project project, String serviceName, 
   			BindingModel binding, String xpathExpression) {
-       XPathOperationSelectorModel xpathSelector = new V1XPathOperationSelectorModel();
+       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+       SwitchYardModel switchYardConfig = switchYard.getSwitchYardConfig();
+       String switchYardNamespace = getSwitchYardNamespace(switchYardConfig);
+	   XPathOperationSelectorModel xpathSelector = new V1XPathOperationSelectorModel(switchYardNamespace);
        xpathSelector.setExpression(xpathExpression);
        addOperationSelector(project, serviceName, binding, xpathSelector);
    }
@@ -652,7 +671,10 @@ public class SwitchYardConfigurator
     */
    public void addRegexOperationSelector(Project project, String serviceName,
 		   BindingModel binding, String regex) {
-       RegexOperationSelectorModel regexSelector = new V1RegexOperationSelectorModel();
+       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+       SwitchYardModel switchYardConfig = switchYard.getSwitchYardConfig();
+       String switchYardNamespace = getSwitchYardNamespace(switchYardConfig);
+	   RegexOperationSelectorModel regexSelector = new V1RegexOperationSelectorModel(switchYardNamespace);
        regexSelector.setExpression(regex);
        addOperationSelector(project, serviceName, binding, regexSelector);
    }
@@ -666,7 +688,10 @@ public class SwitchYardConfigurator
     */
    public void addJavaOperationSelector(Project project, String serviceName,
 		   BindingModel binding, String clazz) {
-       JavaOperationSelectorModel javaSelector = new V1JavaOperationSelectorModel();
+       SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+       SwitchYardModel switchYardConfig = switchYard.getSwitchYardConfig();
+       String switchYardNamespace = getSwitchYardNamespace(switchYardConfig);
+	   JavaOperationSelectorModel javaSelector = new V1JavaOperationSelectorModel(switchYardNamespace);
        javaSelector.setClazz(clazz);
        addOperationSelector(project, serviceName, binding, javaSelector);
    }
@@ -681,6 +706,8 @@ public class SwitchYardConfigurator
    public void addOperationSelector(Project project, String serviceName, 
 		   BindingModel binding, OperationSelectorModel selector) {
        SwitchYardFacet switchYard = project.getFacet(SwitchYardFacet.class);
+       SwitchYardModel switchYardConfig = switchYard.getSwitchYardConfig();
+       String switchYardNamespace = getSwitchYardNamespace(switchYardConfig);
        CompositeServiceModel service = null;
        for (CompositeServiceModel s : switchYard.getSwitchYardConfig().getComposite().getServices()) {
            if (s.getName().equals(serviceName)) {
@@ -701,15 +728,7 @@ public class SwitchYardConfigurator
        binding.setOperationSelector(selector);
        switchYard.saveConfig();
    }
-   
-   private enum OperationSelectorType {
-       Static, XPath, Regex, Java
-   }
-    
-   private enum TransformerTypes {
-       Java, Smooks, XSLT, JSON, JAXB
-   }
-   
+      
    /**
     * Add a policy.
     * @param project project
@@ -744,15 +763,15 @@ public class SwitchYardConfigurator
        
        String target = null;
 
-       if (where.equals("Implementation")) {
+       if (where.equalsIgnoreCase("Implementation")) {
            component.getImplementation().addPolicyRequirement(p.getName());
            target = "Implementation";
-       } else if (where.equals("Service")) {
+       } else if (where.equalsIgnoreCase("Service")) {
            // component service should be just one
            ComponentServiceModel service = component.getServices().get(0);
            service.addPolicyRequirement(p.getName());
            target = service.getName();
-       } else if (where.equals("Reference")) {
+       } else if (where.equalsIgnoreCase("Reference")) {
            if (component.getReferences().size() == 0) {
         	   throw new IllegalArgumentException("No reference is found in " + componentName);
            }
@@ -767,5 +786,138 @@ public class SwitchYardConfigurator
        switchYard.saveConfig();
    }
    
+    /**
+     * Get the SwitchYard configuration for the given project.
+     * @param project project
+     * @param verbose whether to print out the XML
+     * @return String containing config model
+     */
+    public String getConfig(Project project, Boolean verbose) {
+       SwitchYardModel config = project.getFacet(SwitchYardFacet.class).getMergedSwitchYardConfig();
+       String newLine = System.getProperty("line.separator");
+       
+       //TerminalTextStyle BOLD = new TerminalTextStyle(CharacterType.BOLD);
+       //TerminalColor YELLOW = new TerminalColor(Color.YELLOW, Color.DEFAULT);
+       //TerminalColor RED = new TerminalColor(Color.RED, Color.DEFAULT);
+       
+       // 'verbose' option with no value or value=true counts
+       if (verbose == null || verbose) {
+    	   return(config.toString());
+       }
+
+       StringBuilder builder = new StringBuilder();
+       builder.append(String.format("[Public]%n"));
+       // Print promoted service info
+       for (CompositeServiceModel service : config.getComposite().getServices()) {
+    	   //builder.append(new TerminalString("service: ", BOLD));
+    	   builder.append("service: ");
+
+    	   builder.append(String.format(service.getName() + "%n"));
+           //builder.append(new TerminalString("   interface: ", BOLD));
+           builder.append("   interface: ");
+
+           if (service.getInterface() != null) {
+               builder.append(String.format(service.getInterface().getInterface() + "%n"));
+           } else {
+               //builder.append(new TerminalString("inherited", YELLOW));
+               builder.append("inherited");
+        	   builder.append(newLine);
+           }
+           for (BindingModel binding : service.getBindings()) {
+               //builder.append(new TerminalString("   binding: ", BOLD));
+               builder.append("   binding: ");
+
+        	   builder.append(String.format(binding.getType() + "%n"));
+           }
+       }
+       // Print promoted reference info
+       for (CompositeReferenceModel reference : config.getComposite().getReferences()) {
+           //builder.append(new TerminalString("reference: ", BOLD));
+           builder.append("reference: ");
+
+           builder.append(String.format(reference.getName() + "%n"));
+           //builder.append(new TerminalString("   interface: ", BOLD));
+           builder.append("   interface: ");
+
+           if (reference.getInterface() != null) {
+               builder.append(String.format(reference.getInterface().getInterface() + "%n"));
+           } else {
+               //builder.append(new TerminalString("inherited", YELLOW));
+               builder.append("inherited");
+
+               builder.append(newLine);
+           }
+           for (BindingModel binding : reference.getBindings()) {
+        	   //builder.append(new TerminalString("   binding: ", BOLD));
+        	   builder.append("   binding: ");
+
+               builder.append(binding.getType());
+           }
+       }
+       
+       builder.append(newLine);
+       builder.append(String.format("[Private]%n"));
+       for (ComponentModel component : config.getComposite().getComponents()) {
+    	   //builder.append(new TerminalString( "component: ", BOLD));
+    	   builder.append("component: ");
+
+           builder.append(String.format(component.getName() + "%n"));
+           for (ComponentServiceModel service : component.getServices()) {
+        	   builder.append("   service: ");
+        	   //builder.append(new TerminalString("   service: ", BOLD));
+               builder.append(String.format(service.getName() + "%n"));
+               //builder.append(new TerminalString("      interface: ", BOLD));
+               builder.append("      interface: ");
+
+               if (service.getInterface() != null) {
+                   builder.append(String.format(service.getInterface().getInterface() + "%n"));
+               } else {
+            	   builder.append("unspecified");
+
+            	   //builder.append(new TerminalString("unspecified", RED));
+                   builder.append(newLine);
+               }
+           }
+           for (ComponentReferenceModel reference : component.getReferences()) {
+        	   //builder.append(new TerminalString("   reference: ", BOLD));
+        	   builder.append("   reference: ");
+
+        	   builder.append(String.format(reference.getName() + "%n"));
+               //builder.append(new TerminalString("      interface: ", BOLD));
+               builder.append("      interface: ");
+
+               if (reference.getInterface() != null) {
+            	   builder.append(String.format(reference.getInterface().getInterface()));
+                   builder.append(newLine);
+               } else {
+            	   builder.append("unspecified");
+
+            	   //builder.append(new TerminalString("unspecified", RED));
+                   builder.append(newLine);
+               }
+           }
+       }
+       builder.append(newLine);
+       return builder.toString();
+   }
+
+
+   /**
+    * Get the namespace based on the SwitchYard config segment.
+    * @param config SwitchYard config
+    * @return namespace string
+    */
+   private String getSwitchYardNamespace(SwitchYardModel config) {
+       String ns = null;
+       if (config != null) {
+           ns = config.getModelRootNamespace();
+       }
+       if (ns == null) {
+           ns = SwitchYardNamespace.DEFAULT.uri();
+       }
+       return ns;
+   }
+
+
    
 }

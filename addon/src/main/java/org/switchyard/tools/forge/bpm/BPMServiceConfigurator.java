@@ -1,25 +1,18 @@
-/* 
- * JBoss, Home of Professional Open Source 
- * Copyright 2011 Red Hat Inc. and/or its affiliates and other contributors
- * as indicated by the @author tags. All rights reserved. 
- * See the copyright.txt in the distribution for a 
- * full listing of individual contributors.
+/*
+ * Copyright 2014 Red Hat Inc. and/or its affiliates and other contributors.
  *
- * This copyrighted material is made available to anyone wishing to use, 
- * modify, copy, or redistribute it subject to the terms and conditions 
- * of the GNU Lesser General Public License, v. 2.1. 
- * This program is distributed in the hope that it will be useful, but WITHOUT A 
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
- * PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details. 
- * You should have received a copy of the GNU Lesser General Public License, 
- * v.2.1 along with this distribution; if not, write to the Free Software 
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
- * MA  02110-1301, USA.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package org.switchyard.tools.forge.bpm;
 
-import static org.switchyard.component.bpm.config.model.BPMComponentImplementationModel.DEFAULT_NAMESPACE;
 import java.io.File;
 
 import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
@@ -32,7 +25,6 @@ import org.switchyard.common.io.resource.SimpleResource;
 import org.switchyard.common.io.resource.ResourceType;
 import org.switchyard.component.bpm.BPMOperationType;
 import org.switchyard.component.bpm.config.model.v1.V1BPMComponentImplementationModel;
-import org.switchyard.component.bpm.config.model.v1.V1BPMComponentImplementationModel;
 import org.switchyard.component.bpm.config.model.v1.V1BPMOperationModel;
 import org.switchyard.component.common.knowledge.config.model.OperationModel;
 import org.switchyard.component.common.knowledge.config.model.v1.V1ManifestModel;
@@ -44,8 +36,10 @@ import org.switchyard.config.model.composite.v1.V1InterfaceModel;
 import org.switchyard.config.model.resource.v1.V1ResourceModel;
 import org.switchyard.config.model.resource.v1.V1ResourcesModel;
 import org.switchyard.config.model.switchyard.SwitchYardModel;
+import org.switchyard.config.model.switchyard.SwitchYardNamespace;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 import org.switchyard.tools.forge.plugin.TemplateResource;
+import org.switchyard.component.bpm.config.model.BPMNamespace;
 
 /**
  * Forge plugin for Bean component commands.
@@ -159,7 +153,7 @@ public class BPMServiceConfigurator
       // Create the component service model
       V1ComponentModel component = new V1ComponentModel();
       component.setName(serviceName);
-      V1ComponentServiceModel service = new V1ComponentServiceModel();
+      V1ComponentServiceModel service = new V1ComponentServiceModel(SwitchYardNamespace.DEFAULT.uri());
       service.setName(serviceName);
       InterfaceModel csi = new V1InterfaceModel(InterfaceModel.JAVA);
       csi.setInterface(interfaceName);
@@ -167,17 +161,17 @@ public class BPMServiceConfigurator
       component.addService(service);
 
       // Create the BPM implementation model and add it to the component model
-      V1BPMComponentImplementationModel bpm = new V1BPMComponentImplementationModel();
+      V1BPMComponentImplementationModel bpm = new V1BPMComponentImplementationModel(BPMNamespace.DEFAULT.uri());
       bpm.setProcessId(processId);
       bpm.setPersistent(persistent);
 
-      V1OperationsModel operations = new V1OperationsModel(DEFAULT_NAMESPACE);
-      OperationModel operation = (OperationModel)new V1BPMOperationModel().setType(BPMOperationType.START_PROCESS).setName("operation");
+      V1OperationsModel operations = new V1OperationsModel(BPMNamespace.DEFAULT.uri());
+      OperationModel operation = (OperationModel)new V1BPMOperationModel(BPMNamespace.DEFAULT.uri()).setType(BPMOperationType.START_PROCESS).setName("operation");
       operations.addOperation(operation);
       bpm.setOperations(operations);
-      V1ManifestModel manifest = new V1ManifestModel(DEFAULT_NAMESPACE);
-      V1ResourcesModel resources = new V1ResourcesModel(DEFAULT_NAMESPACE);
-      resources.addResource(new V1ResourceModel(DEFAULT_NAMESPACE).setLocation(processDefinition).setType(ResourceType.valueOf("BPMN2")));
+      V1ManifestModel manifest = new V1ManifestModel(BPMNamespace.DEFAULT.uri());
+      V1ResourcesModel resources = new V1ResourcesModel(BPMNamespace.DEFAULT.uri());
+      resources.addResource(new V1ResourceModel(BPMNamespace.DEFAULT.uri()).setLocation(processDefinition).setType(ResourceType.valueOf("BPMN2")));
       manifest.setResources(resources);
       bpm.setManifest(manifest);
 
