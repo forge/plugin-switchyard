@@ -76,6 +76,7 @@ public class CamelBindReferenceCommand extends AbstractSwitchYardCommand {
         
         camelBindingConfigurator.bindReference(project, referenceName.getValue(), 
         		configURI.getValue());
+        
         if (facet != null)
         {
            return Results.success("Camel Reference has been bound.");

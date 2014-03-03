@@ -77,6 +77,8 @@ public class BeanServiceCommand extends AbstractSwitchYardCommand {
     public Result execute(UIExecutionContext context) throws Exception {
         Project project = getSelectedProject(context);
         BeanFacet facet = facetFactory.install(project, BeanFacet.class);
+        MetadataFacet mdf = project.getFacet(MetadataFacet.class);
+        mdf.setTopLevelPackage(packageName.getValue());
         
         beanServiceConfigurator.newBean(project, packageName.getValue(), serviceName.getValue());
         if (facet != null)

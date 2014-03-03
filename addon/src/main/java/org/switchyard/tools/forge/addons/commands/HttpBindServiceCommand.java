@@ -78,9 +78,9 @@ public class HttpBindServiceCommand extends AbstractSwitchYardCommand  {
         		contextPath.getValue());
         if (facet != null)
         {
-           return Results.success("HTTP Service has been installed.");
+           return Results.success("Service has been bound with HTTP Reference.");
         }
-        return Results.fail("Could not install HTTP Service.");
+        return Results.fail("Could not bind Service with HTTP Reference.");
     }
 
     @Override

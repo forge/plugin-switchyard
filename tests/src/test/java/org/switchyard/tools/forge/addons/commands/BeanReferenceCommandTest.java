@@ -20,8 +20,6 @@ import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.forge.addon.facets.FacetFactory;
-import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
-import org.jboss.forge.addon.parser.java.resources.JavaResource;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.projects.facets.ResourcesFacet;
@@ -38,12 +36,12 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.switchyard.tools.forge.addons.commands.BeanServiceCommand;
+import org.switchyard.tools.forge.addons.commands.BeanReferenceCommand;
 import org.switchyard.tools.forge.bean.BeanFacet;
 import org.switchyard.tools.forge.bean.BeanServiceConfigurator;
 
 @RunWith(Arquillian.class)
-public class BeanServiceCommandTest {
+public class BeanReferenceCommandTest {
    @Deployment
    @Dependencies({
             @AddonDependency(name = "org.jboss.forge.addon:projects"),
@@ -79,7 +77,7 @@ public class BeanServiceCommandTest {
 
    @Inject
    private UITestHarness testHarness;
-   
+      
    private String getBeanFileName(Project project, String packageName, String className) {
 	      String destDir = "src" + File.separator + "main"
 	               + File.separator + "java";
@@ -92,7 +90,12 @@ public class BeanServiceCommandTest {
 	      }
 	      
 	      String resourceFile = destDir + File.separator + (className + ".java");
-
+	      
+	      if (project.hasFacet(ResourcesFacet.class)) {
+	    	  ResourcesFacet resource = project.getFacet(ResourcesFacet.class);
+	    	  FileResource fr = resource.getResource(resourceFile);
+		      return fr.getFullyQualifiedName();
+	      }
 	      return project.getRootDirectory().getFullyQualifiedName() + File.separator 
 	    		  + resourceFile;
    }	
@@ -102,25 +105,33 @@ public class BeanServiceCommandTest {
    {
       final Project project = projectFactory.createTempProject();
       facetFactory.install(project, BeanFacet.class);
-      facetFactory.install(project, ResourcesFacet.class);      
-      try (CommandController tester = testHarness.createCommandController(BeanServiceCommand.class,
+      facetFactory.install(project, ResourcesFacet.class);
+      
+      try (CommandController beanTester = testHarness.createCommandController(BeanServiceCommand.class,
+              project.getRootDirectory()))
+     {
+    	beanTester.initialize();
+    	beanTester.setValueFor("serviceName", "foobar");
+    	beanTester.setValueFor("packageName", "foo");
+        Assert.assertTrue(beanTester.isValid());
+        Result result = beanTester.execute();
+     }
+      
+      try (CommandController tester = testHarness.createCommandController(BeanReferenceCommand.class,
               project.getRootDirectory()))
      {
         tester.initialize();
-        tester.setValueFor("serviceName", "foobar");
+        
         tester.setValueFor("packageName", "foo");
+        tester.setValueFor("beanName", "foobar");
+        tester.setValueFor("referenceName", "Reference");
+        tester.setValueFor("referenceBeanName", "ReferenceBean");
+        
         Assert.assertTrue(tester.isValid());
 
         Result result = tester.execute();
-        Assert.assertTrue(result.getMessage().equals("Bean Service has been installed."));
-        
-        String beanFileName = getBeanFileName(project, "foo", "foobarBean");
-        File file = new File(beanFileName);
-        Assert.assertTrue(file.exists());
-        
-        String interfaceName = getBeanFileName(project, "foo", "foobar");
-        file = new File(interfaceName);
-        Assert.assertTrue(file.exists());        
+        Assert.assertTrue(result.getMessage().equals("Bean Reference has been installed."));
+
      }
       
    }

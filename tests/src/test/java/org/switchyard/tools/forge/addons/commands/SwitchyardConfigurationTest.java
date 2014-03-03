@@ -151,7 +151,7 @@ public class SwitchyardConfigurationTest
    @Test
    public void testAddOperationSelector() throws Exception 
    {
-      SwitchYardFacet switchYard = facetFactory.install(project, SwitchYardFacet.class);
+	   SwitchYardFacet switchYard = facetFactory.install(project, SwitchYardFacet.class);
        String serviceName = "ForgeTestService";
        CompositeServiceModel service = new V1CompositeServiceModel();
        service.setName(serviceName);

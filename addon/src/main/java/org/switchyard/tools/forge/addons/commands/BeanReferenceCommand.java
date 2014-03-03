@@ -17,6 +17,7 @@ package org.switchyard.tools.forge.addons.commands;
 import javax.inject.Inject;
 
 import org.jboss.forge.addon.facets.FacetFactory;
+import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
@@ -87,6 +88,7 @@ public class BeanReferenceCommand extends AbstractSwitchYardCommand  {
     public Result execute(UIExecutionContext context) throws Exception {
         Project project = getSelectedProject(context);
         BeanFacet facet = facetFactory.install(project, BeanFacet.class);
+        JavaSourceFacet jsFacet = facetFactory.install(project, JavaSourceFacet.class);
         
         beanReferenceConfigurator.newReference(project, 
         		beanName.getValue(),

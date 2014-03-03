@@ -14,14 +14,13 @@
 package org.switchyard.tools.forge.addons.commands;
 
 import java.io.File;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.forge.addon.facets.FacetFactory;
-import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
-import org.jboss.forge.addon.parser.java.resources.JavaResource;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.projects.facets.ResourcesFacet;
@@ -38,12 +37,21 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.switchyard.tools.forge.addons.commands.BeanServiceCommand;
+import org.switchyard.tools.forge.addons.commands.HttpBindReferenceCommand;
+import org.switchyard.tools.forge.addons.commands.HttpBindServiceCommand;
+import org.switchyard.config.model.composite.v1.V1CompositeServiceModel;
+import org.switchyard.config.model.composite.v1.V1BindingModel;
+import org.switchyard.tools.forge.plugin.SwitchYardFacet;
+import org.switchyard.config.model.composite.BindingModel;
+import org.switchyard.config.model.composite.CompositeServiceModel;
 import org.switchyard.tools.forge.bean.BeanFacet;
-import org.switchyard.tools.forge.bean.BeanServiceConfigurator;
+import org.switchyard.tools.forge.http.HttpFacet;
+import org.switchyard.tools.forge.http.HttpServiceConfigurator;
+import org.switchyard.component.camel.core.model.v1.V1CamelUriBindingModel;
+
 
 @RunWith(Arquillian.class)
-public class BeanServiceCommandTest {
+public class HttpBindingCommandTest {
    @Deployment
    @Dependencies({
             @AddonDependency(name = "org.jboss.forge.addon:projects"),
@@ -80,48 +88,32 @@ public class BeanServiceCommandTest {
    @Inject
    private UITestHarness testHarness;
    
-   private String getBeanFileName(Project project, String packageName, String className) {
-	      String destDir = "src" + File.separator + "main"
-	               + File.separator + "java";
-	      if (packageName != null && packageName.length() > 0)
-	      {
-	         for (String pkgDir : packageName.split("\\."))
-	         {
-	            destDir += File.separator + pkgDir;
-	         }
-	      }
-	      
-	      String resourceFile = destDir + File.separator + (className + ".java");
-
-	      return project.getRootDirectory().getFullyQualifiedName() + File.separator 
-	    		  + resourceFile;
-   }	
-   
    @Test
-   public void testSetupBeanServices() throws Exception
+   public void testHttpServices() throws Exception
    {
-      final Project project = projectFactory.createTempProject();
-      facetFactory.install(project, BeanFacet.class);
-      facetFactory.install(project, ResourcesFacet.class);      
-      try (CommandController tester = testHarness.createCommandController(BeanServiceCommand.class,
-              project.getRootDirectory()))
-     {
+      //Create Bean Service we can bind a Camel reference to 
+      final Project httpProject = projectFactory.createTempProject();
+      facetFactory.install(httpProject, HttpFacet.class);
+      SwitchYardFacet switchYard = facetFactory.install(httpProject, SwitchYardFacet.class);
+      String serviceName = "foobar";
+      CompositeServiceModel service = new V1CompositeServiceModel();
+      service.setName(serviceName);
+      switchYard.getSwitchYardConfig().getComposite().addService(service);
+      switchYard.saveConfig();
+      
+      // Bind Http Reference
+      try (CommandController tester = testHarness.createCommandController(HttpBindServiceCommand.class,
+    		  httpProject.getRootDirectory()))
+      {
         tester.initialize();
-        tester.setValueFor("serviceName", "foobar");
-        tester.setValueFor("packageName", "foo");
+        
+        tester.setValueFor("serviceName", serviceName);
+        tester.setValueFor("contextPath", "blah");
         Assert.assertTrue(tester.isValid());
 
         Result result = tester.execute();
-        Assert.assertTrue(result.getMessage().equals("Bean Service has been installed."));
-        
-        String beanFileName = getBeanFileName(project, "foo", "foobarBean");
-        File file = new File(beanFileName);
-        Assert.assertTrue(file.exists());
-        
-        String interfaceName = getBeanFileName(project, "foo", "foobar");
-        file = new File(interfaceName);
-        Assert.assertTrue(file.exists());        
-     }
+        Assert.assertTrue(result.getMessage().equals("Service has been bound with HTTP Reference."));        
+      }
       
    }
 

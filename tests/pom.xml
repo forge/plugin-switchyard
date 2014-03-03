@@ -69,5 +69,23 @@
          <classifier>forge-addon</classifier>
          <scope>provided</scope>
       </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.addon</groupId>
+         <artifactId>parser-java</artifactId>
+         <version>${forge.version}</version>
+	 <classifier>forge-addon</classifier>
+         <scope>provided</scope>
+      </dependency>
    </dependencies>
+<build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>-Xmx512m -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
