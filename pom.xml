@@ -16,8 +16,8 @@
 
    <properties>
       <skipTests>false</skipTests>
-      <furnace.version>2.1.1.Final</furnace.version>
-      <forge.version>2.1.1.Final</forge.version>
+      <furnace.version>2.1.2-SNAPSHOT</furnace.version>
+      <forge.version>2.1.2-SNAPSHOT</forge.version>
       <switchyard.version>2.0.0-SNAPSHOT</switchyard.version>
       <version.xalan>2.7.1-1.jbossorg</version.xalan>
    </properties>
