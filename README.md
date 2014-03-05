@@ -9,14 +9,16 @@ SwitchYard integrates with JBoss Forge to provide a set of rapid application dev
 
 The first thing you'll want to do with Forge is create a new project.&nbsp; This can be done inside the Forge shell using the new-project command.
 
-<code>
-switchyard$ forge<br>
-JBoss Forge, version [ 2.0.0.Final ] - JBoss, by Red Hat, Inc. [ http://forge.jboss.org ]<br>
-[switchyard]$ project-new --named syApp --topLevelPackage org.switchyard.examples.forge<br>
-***SUCCESS*** Project named 'syApp' has been created.<br>
-</br>
+<code><br/>
+switchyard$ forge<br/>
+JBoss Forge, version [ 2.0.0.Final ] - JBoss, by Red Hat, Inc. [ http://forge.jboss.org ]<br/>
+[switchyard]$ project-new --named syApp --topLevelPackage org.switchyard.examples.forge<br/>
+***SUCCESS*** Project named 'syApp' has been created.<br/>
+<br/>
 </code>
+<p>
 At this point, you have an empty application with a few Maven facets installed.&nbsp; What's a facet you ask?&nbsp; Read on ....
+</p>
 
 ### Facets
 
