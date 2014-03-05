@@ -93,12 +93,6 @@ import org.switchyard.validate.config.model.v1.V1SchemaCatalogsModel;
 import org.switchyard.validate.config.model.v1.V1SchemaFilesModel;
 import org.switchyard.validate.config.model.v1.V1XmlValidateModel;
 
-//import org.jboss.aesh.terminal.CharacterType;
-//import org.jboss.aesh.terminal.Color;
-//import org.jboss.aesh.terminal.TerminalColor;
-//import org.jboss.aesh.terminal.TerminalString;
-//import org.jboss.aesh.terminal.TerminalTextStyle;
-
 /**
  * Project-level commands for SwitchYard applications.
  */

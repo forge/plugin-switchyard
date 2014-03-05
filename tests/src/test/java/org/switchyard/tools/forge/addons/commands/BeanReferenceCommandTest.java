@@ -14,7 +14,6 @@
 package org.switchyard.tools.forge.addons.commands;
 
 import java.io.File;
-
 import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -24,21 +23,19 @@ import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.projects.facets.ResourcesFacet;
 import org.jboss.forge.addon.resource.FileResource;
-import org.jboss.forge.addon.resource.ResourceFacet;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.result.Result;
+import org.jboss.forge.addon.ui.test.UITestHarness;
 import org.jboss.forge.arquillian.AddonDependency;
 import org.jboss.forge.arquillian.Dependencies;
 import org.jboss.forge.arquillian.archive.ForgeArchive;
 import org.jboss.forge.furnace.repositories.AddonDependencyEntry;
-import org.jboss.forge.addon.ui.test.UITestHarness;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.switchyard.tools.forge.addons.commands.BeanReferenceCommand;
 import org.switchyard.tools.forge.bean.BeanFacet;
-import org.switchyard.tools.forge.bean.BeanServiceConfigurator;
 
 @RunWith(Arquillian.class)
 public class BeanReferenceCommandTest {

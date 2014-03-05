@@ -16,12 +16,12 @@ package org.switchyard.tools.forge.camel;
 import java.net.URI;
 
 import org.jboss.forge.addon.projects.Project;
-import org.switchyard.config.model.composite.CompositeReferenceModel;
-import org.switchyard.config.model.composite.CompositeServiceModel;
-import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 
 import org.switchyard.component.camel.core.model.CamelCoreNamespace;
 import org.switchyard.component.camel.core.model.v1.V1CamelUriBindingModel;
+import org.switchyard.config.model.composite.CompositeReferenceModel;
+import org.switchyard.config.model.composite.CompositeServiceModel;
+import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 
 /**
  * Forge plugin for Camel binding commands.

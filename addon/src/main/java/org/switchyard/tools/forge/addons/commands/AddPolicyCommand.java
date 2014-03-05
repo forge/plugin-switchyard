@@ -13,6 +13,10 @@
  */
 package org.switchyard.tools.forge.addons.commands;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import org.jboss.forge.addon.convert.Converter;
@@ -36,10 +40,6 @@ import org.switchyard.tools.forge.rules.RulesFacet;
 import org.switchyard.tools.forge.plugin.SwitchYardConfigurator;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 import org.switchyard.tools.forge.plugin.PolicyPlacementLocations;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Command to add a required policy on component service/reference.

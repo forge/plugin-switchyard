@@ -27,9 +27,9 @@ import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
-import org.switchyard.tools.forge.bean.BeanFacet;
 import org.switchyard.tools.forge.camel.CamelBindingConfigurator;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
+import org.switchyard.tools.forge.bean.BeanFacet;
 
 /**
  * Command for binding a reference using a Camel endpoint URI.

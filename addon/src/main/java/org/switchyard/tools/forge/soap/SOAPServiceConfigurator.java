@@ -16,16 +16,17 @@ package org.switchyard.tools.forge.soap;
 import javax.inject.Inject;
 
 import org.jboss.forge.addon.projects.Project;
-
 import org.switchyard.common.net.SocketAddr;
 import org.switchyard.component.soap.PortName;
 import org.switchyard.component.soap.config.model.SOAPBindingModel;
 import org.switchyard.component.soap.config.model.SOAPNamespace;
 import org.switchyard.component.soap.config.model.v1.V1SOAPBindingModel;
+
 import org.switchyard.config.model.composite.CompositeReferenceModel;
 import org.switchyard.config.model.composite.CompositeServiceModel;
 import org.switchyard.config.model.composite.InterfaceModel;
 import org.switchyard.config.model.composite.v1.V1InterfaceModel;
+
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 
 /**

@@ -13,9 +13,6 @@
  */
 package org.switchyard.tools.forge.addons.commands;
 
-import java.io.File;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -23,47 +20,30 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.forge.addon.facets.FacetFactory;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
-import org.jboss.forge.addon.projects.facets.ResourcesFacet;
-import org.jboss.forge.addon.resource.FileResource;
-import org.jboss.forge.addon.resource.ResourceFacet;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.result.Result;
+import org.jboss.forge.addon.ui.test.UITestHarness;
 import org.jboss.forge.arquillian.AddonDependency;
 import org.jboss.forge.arquillian.Dependencies;
 import org.jboss.forge.arquillian.archive.ForgeArchive;
 import org.jboss.forge.furnace.repositories.AddonDependencyEntry;
-import org.jboss.forge.addon.ui.test.UITestHarness;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.switchyard.tools.forge.addons.commands.CamelServiceCreateCommand;
-import org.switchyard.tools.forge.addons.commands.CamelBindServiceCommand;
-import org.switchyard.tools.forge.addons.commands.CamelBindReferenceCommand;
-import org.switchyard.config.model.composite.v1.V1BindingModel;
-import org.switchyard.config.model.composite.v1.V1ComponentModel;
-import org.switchyard.config.model.composite.v1.V1ComponentReferenceModel;
-import org.switchyard.config.model.composite.v1.V1ComponentServiceModel;
-import org.switchyard.config.model.composite.v1.V1CompositeReferenceModel;
-import org.switchyard.config.model.composite.v1.V1CompositeServiceModel;
 
+import org.switchyard.tools.forge.camel.CamelFacet;
+import org.switchyard.tools.forge.plugin.SwitchYardConfigurator;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
-import org.switchyard.config.model.composite.BindingModel;
-import org.switchyard.config.model.composite.CompositeServiceModel;
+
 import org.switchyard.config.model.composite.ComponentModel;
 import org.switchyard.config.model.composite.ComponentReferenceModel;
 import org.switchyard.config.model.composite.ComponentServiceModel;
+import org.switchyard.config.model.composite.v1.V1ComponentModel;
+import org.switchyard.config.model.composite.v1.V1ComponentReferenceModel;
+import org.switchyard.config.model.composite.v1.V1ComponentServiceModel;
 import org.switchyard.config.model.switchyard.SwitchYardNamespace;
-
-import org.switchyard.tools.forge.bean.BeanFacet;
-import org.switchyard.tools.forge.camel.CamelFacet;
-import org.switchyard.tools.forge.camel.CamelBindingConfigurator;
-import org.switchyard.tools.forge.camel.CamelServiceConfigurator;
-import org.switchyard.tools.forge.camel.InterfaceTypes;
-import org.switchyard.tools.forge.camel.RouteTypes;
-import org.switchyard.tools.forge.plugin.SwitchYardConfigurator;
-import org.switchyard.tools.forge.plugin.SwitchYardFacet;
-import org.switchyard.component.camel.core.model.v1.V1CamelUriBindingModel;
 
 
 @RunWith(Arquillian.class)

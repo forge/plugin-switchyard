@@ -13,8 +13,8 @@
  */
 package org.switchyard.tools.forge.addons.commands;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
