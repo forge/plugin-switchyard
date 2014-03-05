@@ -23,24 +23,27 @@ import org.jboss.forge.parser.JavaParser;
 import org.jboss.forge.parser.java.JavaInterface;
 
 import org.switchyard.common.io.resource.ResourceType;
-import org.switchyard.component.common.knowledge.config.model.OperationModel;
-import org.switchyard.component.common.knowledge.config.model.v1.V1ManifestModel;
-import org.switchyard.component.common.knowledge.config.model.v1.V1OperationsModel;
 import org.switchyard.component.rules.RulesOperationType;
 import org.switchyard.component.rules.config.model.RulesNamespace;
 import org.switchyard.component.rules.config.model.v1.V1RulesComponentImplementationModel;
 import org.switchyard.component.rules.config.model.v1.V1RulesOperationModel;
+import org.switchyard.component.common.knowledge.config.model.OperationModel;
+import org.switchyard.component.common.knowledge.config.model.v1.V1ManifestModel;
+import org.switchyard.component.common.knowledge.config.model.v1.V1OperationsModel;
+
 import org.switchyard.config.model.composite.InterfaceModel;
 import org.switchyard.config.model.composite.v1.V1ComponentModel;
 import org.switchyard.config.model.composite.v1.V1ComponentServiceModel;
 import org.switchyard.config.model.composite.v1.V1InterfaceModel;
 import org.switchyard.config.model.resource.v1.V1ResourceModel;
 import org.switchyard.config.model.resource.v1.V1ResourcesModel;
-
 import org.switchyard.config.model.switchyard.SwitchYardModel;
 import org.switchyard.config.model.switchyard.SwitchYardNamespace;
+
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 import org.switchyard.tools.forge.plugin.TemplateResource;
+
+
 
 /**
  * Forge plugin for Rules component commands.

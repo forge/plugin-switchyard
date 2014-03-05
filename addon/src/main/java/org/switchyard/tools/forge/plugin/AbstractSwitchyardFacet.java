@@ -80,9 +80,7 @@ public abstract class AbstractSwitchyardFacet extends AbstractFacet<Project> imp
       if (!_depends.isEmpty())
       {
          Dependency dep = DependencyBuilder.create(_depends.get(0));
-         String packagingType = getFaceted().getFacet(PackagingFacet.class).getPackagingType();
-         installed = getFaceted().getFacet(DependencyFacet.class).hasDirectDependency(dep)
-                  && "jar".equalsIgnoreCase(packagingType);
+         installed = getFaceted().getFacet(DependencyFacet.class).hasDirectDependency(dep);
       }
       return installed;
    }

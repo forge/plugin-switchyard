@@ -24,6 +24,7 @@ import org.jboss.forge.parser.java.JavaInterface;
 import org.switchyard.common.io.resource.SimpleResource;
 import org.switchyard.common.io.resource.ResourceType;
 import org.switchyard.component.bpm.BPMOperationType;
+import org.switchyard.component.bpm.config.model.BPMNamespace;
 import org.switchyard.component.bpm.config.model.v1.V1BPMComponentImplementationModel;
 import org.switchyard.component.bpm.config.model.v1.V1BPMOperationModel;
 import org.switchyard.component.common.knowledge.config.model.OperationModel;
@@ -39,7 +40,6 @@ import org.switchyard.config.model.switchyard.SwitchYardModel;
 import org.switchyard.config.model.switchyard.SwitchYardNamespace;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 import org.switchyard.tools.forge.plugin.TemplateResource;
-import org.switchyard.component.bpm.config.model.BPMNamespace;
 
 /**
  * Forge plugin for Bean component commands.

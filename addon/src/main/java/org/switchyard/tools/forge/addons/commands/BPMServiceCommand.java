@@ -13,7 +13,6 @@
  */
 package org.switchyard.tools.forge.addons.commands;
 
-
 import javax.inject.Inject;
 
 import org.jboss.forge.addon.facets.FacetFactory;

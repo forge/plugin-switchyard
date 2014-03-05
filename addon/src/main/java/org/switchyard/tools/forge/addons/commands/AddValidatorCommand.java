@@ -13,6 +13,10 @@
  */
 package org.switchyard.tools.forge.addons.commands;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import org.jboss.forge.addon.convert.Converter;
@@ -38,10 +42,6 @@ import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 import org.switchyard.tools.forge.plugin.PolicyPlacementLocations;
 import org.switchyard.tools.forge.plugin.ValidatorTypes;
 import org.switchyard.validate.config.model.XmlSchemaType;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Command to add a message validator. 

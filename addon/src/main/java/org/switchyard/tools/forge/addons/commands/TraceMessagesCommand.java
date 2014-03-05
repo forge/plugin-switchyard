@@ -31,9 +31,9 @@ import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
+import org.switchyard.tools.forge.plugin.SwitchYardConfigurator;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 import org.switchyard.tools.forge.rules.RulesFacet;
-import org.switchyard.tools.forge.plugin.SwitchYardConfigurator;
 
 /**
  * Command class that adds the trace message property or enables/disables it.

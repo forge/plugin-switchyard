@@ -19,7 +19,6 @@ import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.projects.facets.ResourcesFacet;
 
-
 import org.switchyard.component.resteasy.config.model.RESTEasyBindingModel;
 import org.switchyard.component.resteasy.config.model.RESTEasyNamespace;
 import org.switchyard.component.resteasy.config.model.v1.V1RESTEasyBindingModel;
