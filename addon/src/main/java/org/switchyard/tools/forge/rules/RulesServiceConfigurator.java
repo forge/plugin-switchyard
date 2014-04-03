@@ -19,9 +19,8 @@ import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.projects.facets.ResourcesFacet;
-import org.jboss.forge.parser.JavaParser;
-import org.jboss.forge.parser.java.JavaInterface;
-
+import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.switchyard.common.io.resource.ResourceType;
 import org.switchyard.component.rules.RulesOperationType;
 import org.switchyard.component.rules.config.model.RulesNamespace;
@@ -30,7 +29,6 @@ import org.switchyard.component.rules.config.model.v1.V1RulesOperationModel;
 import org.switchyard.component.common.knowledge.config.model.OperationModel;
 import org.switchyard.component.common.knowledge.config.model.v1.V1ManifestModel;
 import org.switchyard.component.common.knowledge.config.model.v1.V1OperationsModel;
-
 import org.switchyard.config.model.composite.InterfaceModel;
 import org.switchyard.config.model.composite.v1.V1ComponentModel;
 import org.switchyard.config.model.composite.v1.V1ComponentServiceModel;
@@ -39,7 +37,6 @@ import org.switchyard.config.model.resource.v1.V1ResourceModel;
 import org.switchyard.config.model.resource.v1.V1ResourcesModel;
 import org.switchyard.config.model.switchyard.SwitchYardModel;
 import org.switchyard.config.model.switchyard.SwitchYardNamespace;
-
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 import org.switchyard.tools.forge.plugin.TemplateResource;
 
@@ -60,7 +57,7 @@ public class RulesServiceConfigurator
 
    /**
     * Create a new rules service interface and implementation.
-    * 
+    *
     * @param argServiceName service name
     * @param out shell output
     * @param argInterfaceClass class name of Java service interface
@@ -86,7 +83,7 @@ public class RulesServiceConfigurator
             pkgName = project.getFacet(MetadataFacet.class).getTopLevelPackage();
 
          // Create the service interface
-         JavaInterface ruleInterface = JavaParser.create(JavaInterface.class)
+         JavaInterfaceSource ruleInterface = Roaster.create(JavaInterfaceSource.class)
                   .setPackage(pkgName)
                   .setName(argServiceName)
                   .setPublic();
@@ -111,7 +108,7 @@ public class RulesServiceConfigurator
       createImplementationConfig(project, argServiceName, interfaceClass, ruleDefinitionPath, agent);
    }
 
-   
+
    /**
     * Create the implementation config.
     * @param project project
@@ -150,7 +147,7 @@ public class RulesServiceConfigurator
       manifest.setResources(resources);
       rules.setManifest(manifest);
       component.setImplementation(rules);
-      
+
       // Add the new component service to the application config
       SwitchYardModel syConfig = switchYard.getSwitchYardConfig();
       syConfig.getComposite().addComponent(component);

@@ -19,8 +19,8 @@ import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.projects.facets.ResourcesFacet;
-import org.jboss.forge.parser.JavaParser;
-import org.jboss.forge.parser.java.JavaInterface;
+import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.switchyard.common.io.resource.SimpleResource;
 import org.switchyard.common.io.resource.ResourceType;
 import org.switchyard.component.bpm.BPMOperationType;
@@ -60,7 +60,7 @@ public class BPMServiceConfigurator
 
    /**
     * Create a new BPM service interface and implementation.
-    * 
+    *
     * @param serviceName service name
     * @param interfaceClass class name of Java service interface
     * @param processFilePath path to the BPMN process definition
@@ -98,7 +98,7 @@ public class BPMServiceConfigurator
       if (interfaceClass == null)
       {
          // Create the service interface
-         JavaInterface processInterface = JavaParser.create(JavaInterface.class)
+         JavaInterfaceSource processInterface = Roaster.create(JavaInterfaceSource.class)
                   .setPackage(pkgName)
                   .setName(serviceName)
                   .setPublic();

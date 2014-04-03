@@ -18,7 +18,6 @@ import java.io.File;
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
-import org.jboss.forge.addon.projects.facets.RequiresPackagingType;
 import org.jboss.forge.addon.resource.DirectoryResource;
 import org.jboss.forge.addon.resource.FileResource;
 import org.switchyard.tools.forge.plugin.AbstractSwitchyardFacet;
@@ -28,7 +27,6 @@ import org.switchyard.tools.forge.plugin.SwitchYardFacet;
  * Forge facet for Bean services.
  */
 @FacetConstraint({ DependencyFacet.class, PackagingFacet.class, SwitchYardFacet.class })
-@RequiresPackagingType("JAR")
 public class BeanFacet extends AbstractSwitchyardFacet
 {
 

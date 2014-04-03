@@ -19,25 +19,25 @@ import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
 import org.jboss.forge.addon.parser.java.resources.JavaResource;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
-import org.jboss.forge.parser.JavaParser;
-import org.jboss.forge.parser.java.Annotation;
-import org.jboss.forge.parser.java.Field;
-import org.jboss.forge.parser.java.JavaClass;
-import org.jboss.forge.parser.java.JavaInterface;
+import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.source.AnnotationSource;
+import org.jboss.forge.roaster.model.source.FieldSource;
+import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.switchyard.component.bean.Reference;
 
 /**
  * Forge plugin for Bean references commands.
- * 
+ *
  * @author Antollini Mario.
- * 
+ *
  */
 public class BeanReferenceConfigurator
 {
 
    /**
     * Create a new Bean service interface and implementation.
-    * 
+    *
     * @param beanName bean name
     * @param referenceName reference name
     * @param referenceBeanName the bean to be referenced
@@ -58,7 +58,7 @@ public class BeanReferenceConfigurator
          throw new IllegalArgumentException("Bean not found: " + beanFile);
       }
 
-      JavaClass javaClass = JavaParser.parse(JavaClass.class, beanFile.getUnderlyingResourceObject());
+      JavaClassSource javaClass = Roaster.parse(JavaClassSource.class, beanFile.getUnderlyingResourceObject());
 
       if (!javaClass.hasImport(Inject.class))
       {
@@ -85,11 +85,11 @@ public class BeanReferenceConfigurator
          referenceFieldName = referenceFieldName + Math.random() * 100;
       }
 
-      Field<JavaClass> referenceField = javaClass.addField("private " + referenceBeanJavaType + " "
+      FieldSource<JavaClassSource> referenceField = javaClass.addField("private " + referenceBeanJavaType + " "
                + referenceFieldName + ";");
 
       referenceField.addAnnotation(Inject.class);
-      Annotation<?> referenceAnnotation = referenceField.addAnnotation(Reference.class);
+      AnnotationSource<JavaClassSource> referenceAnnotation = referenceField.addAnnotation(Reference.class);
       referenceAnnotation.setStringValue(referenceName);
 
       if (javaClass.hasSyntaxErrors())
@@ -108,7 +108,7 @@ public class BeanReferenceConfigurator
       if (!referenceFile.exists())
       {
 
-         JavaInterface skeletonReferencedBean = JavaParser.create(JavaInterface.class);
+         JavaInterfaceSource skeletonReferencedBean = Roaster.create(JavaInterfaceSource.class);
          skeletonReferencedBean.setPackage(meta.getTopLevelPackage());
          skeletonReferencedBean.setName(referenceBeanJavaType);
 
