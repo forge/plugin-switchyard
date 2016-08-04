@@ -16,7 +16,6 @@ package org.switchyard.tools.forge.rules;
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
-import org.jboss.forge.addon.projects.facets.RequiresPackagingType;
 import org.switchyard.tools.forge.plugin.AbstractSwitchyardFacet;
 import org.switchyard.tools.forge.plugin.SwitchYardFacet;
 
@@ -24,7 +23,6 @@ import org.switchyard.tools.forge.plugin.SwitchYardFacet;
  * Forge facet for Rules services.
  */
 @FacetConstraint({ DependencyFacet.class, PackagingFacet.class, SwitchYardFacet.class })
-@RequiresPackagingType("jar")
 public class RulesFacet extends AbstractSwitchyardFacet
 {
 

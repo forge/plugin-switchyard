@@ -44,7 +44,6 @@ import org.jboss.forge.addon.maven.projects.MavenPluginFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
-import org.jboss.forge.addon.projects.facets.RequiresPackagingType;
 import org.jboss.forge.addon.resource.DirectoryResource;
 import org.jboss.forge.addon.resource.FileResource;
 import org.switchyard.common.type.Classes;
@@ -59,7 +58,7 @@ import org.switchyard.config.model.composite.CompositeReferenceModel;
 import org.switchyard.config.model.composite.CompositeServiceModel;
 import org.switchyard.config.model.composite.v1.V1CompositeModel;
 import org.switchyard.config.model.switchyard.SwitchYardModel;
-import org.switchyard.config.model.switchyard.SwitchYardNamespace;	
+import org.switchyard.config.model.switchyard.SwitchYardNamespace;
 import org.switchyard.config.model.switchyard.v1.V1SwitchYardModel;
 
 /**
@@ -67,7 +66,6 @@ import org.switchyard.config.model.switchyard.v1.V1SwitchYardModel;
  * it's own facet implementation and reference the SwitchYard facet using <code>@FacetConstraint</code>.
  */
 @FacetConstraint({ DependencyFacet.class, PackagingFacet.class })
-@RequiresPackagingType("jar")
 public class SwitchYardFacet extends AbstractSwitchyardFacet
 {
    private static final Logger logger = Logger.getLogger(SwitchYardFacet.class.getName());
@@ -163,7 +161,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
 
    /**
     * Retrieve the composite service config for the specified service name.
-    * 
+    *
     * @param name composite service name
     * @return composite service config fragment, or null if the service does not exist
     */
@@ -182,7 +180,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
 
    /**
     * Retrieve the component service config for the specified service name.
-    * 
+    *
     * @param name component service name
     * @return component service config fragment, or null if the service does not exist
     */
@@ -204,7 +202,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
 
    /**
     * Retrieve the composite reference config for the specified reference name.
-    * 
+    *
     * @param name composite reference name
     * @return composite reference config fragment, or null if the reference does not exist
     */
@@ -223,7 +221,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
 
    /**
     * Retrieve the component reference config for the specified reference name.
-    * 
+    *
     * @param name component reference name
     * @return component reference config fragment, or null if the reference does not exist
     */
@@ -247,7 +245,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
     * Returns the editable SwitchYard configuration for the current project. The configuration is loaded if a config
     * property has not been associated with the project, so this method must be synchronized to prevent phantom config
     * references due to concurrent loading.
-    * 
+    *
     * @return switchyard configuration
     */
    public synchronized SwitchYardModel getSwitchYardConfig()
@@ -273,7 +271,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
    /**
     * Retrieves a merge of the user config and the generated configuration in
     * <code>target/classes/META-INF/switchyard.xml</code>.
-    * 
+    *
     * @return merged switchyard configuration
     */
    public SwitchYardModel getMergedSwitchYardConfig()
@@ -378,7 +376,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
 
    /**
     * Adds SwitchYard scanners to the build section of a pom.
-    * 
+    *
     * @param pom the pom to update
     * @param profile the profile to update; a null parameter will simply update the main <build> section.
     * @throws Exception adding scanners failed
@@ -556,7 +554,7 @@ public class SwitchYardFacet extends AbstractSwitchyardFacet
    {
       return new ModelPuller<SwitchYardModel>().pull(file.getUnderlyingResourceObject());
    }
-   
+
    /**
     * Any write activity to the project's config property should be synchronized.
     */
